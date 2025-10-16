@@ -213,3 +213,4 @@ app_license = "MIT"
 # auth_hooks = [
 # 	"pix_one.auth.validate"
 # ]
+website_route_rules = [{'from_route': '/dashboard/<path:app_path>', 'to_route': 'dashboard'},]
