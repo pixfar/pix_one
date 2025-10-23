@@ -19,13 +19,14 @@ const Navbar = () => {
     return (
         <nav
             className={`w-full sticky left-0 z-50 transition-all  duration-500 ease-in-out ${isSticky
-                    ? "top-0 translate-y-0 "
-                    : "top-[-80px] bg-transparent translate-y-6"
+                ? "top-0 translate-y-0 "
+                : "top-[-80px] bg-transparent translate-y-6"
                 }`}
         >
             <div className="max-w-3xl mx-auto px-6 py-4">
                 <div
-                    className={`flex items-center justify-between px-8 py-3 border border-white/10 rounded-full transition-all duration-500 ${isSticky ? "bg-white/10" : "bg-white/5"
+                    className={`flex items-center justify-between px-8 py-3 border border-white/10 rounded-full backdrop-blur-md transition-all duration-500 
+                        ${isSticky ? "bg-[#0d0d0d]/80 border-gray-700 shadow-lg shadow-black/40" : "bg-white/5 border-white/10"
                         }`}
                 >
                     {/* Logo */}
