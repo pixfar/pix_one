@@ -12,9 +12,9 @@ const Banner = () => {
                     Empower Your Business with Intelligent ERP Solutions
                 </h1>
                 <div className="mt-8 flex items-center gap-5">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-3  rounded-full  transition-all duration-300">
-                        Get Started
-                    </button>
+                    <a href="https://demo.pixfar.com" target="_blank" rel="noopener noreferrer" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-3  rounded-full  transition-all duration-300">
+                        Get Free Tier
+                    </a>
                     <button className="bg-transparent border border-white hover:bg-white hover:text-blue-600 text-white font-semibold px-10 py-3 rounded-full  transition-all duration-300">
                         Learn More
                     </button>

@@ -13,6 +13,7 @@ import { Header } from '@/components/Layouts/Headers';
 import { NavItem } from '@/components/Layouts/NavItem';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { ProfileDropdown } from '@/components/profile-dropdown';
+import { ConfigDrawer } from '@/components/config-drawer';
 
 const navItem = [
     {
@@ -58,6 +59,7 @@ const Dashboard = () => {
                     <NavItem links={navItem} />
                     <div className='ms-auto flex items-center space-x-4'>
                         <ThemeSwitch />
+                        <ConfigDrawer/>
                         <ProfileDropdown />
                     </div>
                 </Header>

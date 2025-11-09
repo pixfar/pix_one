@@ -10,6 +10,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ThemeProvider } from './context/ThemeProvider'
+import { DirectionProvider } from './context/DirectionProvider'
+import { LayoutProvider } from './context/LayoutProvider'
 
 const queryClient = new QueryClient()
 
@@ -17,9 +19,13 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <FrappeProvider url="http://localhost:5173">
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <RouterProvider router={router} />
-        </ThemeProvider>
+        <LayoutProvider>
+          <ThemeProvider>
+            <DirectionProvider>
+              <RouterProvider router={router} />
+            </DirectionProvider>
+          </ThemeProvider>
+        </LayoutProvider>
       </QueryClientProvider>
     </FrappeProvider>
   </StrictMode>,
