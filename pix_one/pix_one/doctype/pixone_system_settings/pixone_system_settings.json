@@ -1,0 +1,42 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-19 18:15:31.846706",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ssl_store_id"
+ ],
+ "fields": [
+  {
+   "fieldname": "ssl_store_id",
+   "fieldtype": "Data",
+   "label": "SSL Store Id"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-11-19 18:32:22.736575",
+ "modified_by": "Administrator",
+ "module": "Pix One",
+ "name": "PixOne System Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
