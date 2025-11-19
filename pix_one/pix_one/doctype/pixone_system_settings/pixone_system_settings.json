@@ -5,20 +5,55 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "ssl_store_id"
+  "ssl_commerz_tab",
+  "ssl_commerz_section",
+  "ssl_store_id",
+  "column_break_jbnb",
+  "ssl_store_password",
+  "section_break_gaqr",
+  "is_sandbox"
  ],
  "fields": [
   {
    "fieldname": "ssl_store_id",
    "fieldtype": "Data",
    "label": "SSL Store Id"
+  },
+  {
+   "fieldname": "ssl_commerz_tab",
+   "fieldtype": "Tab Break",
+   "label": "SSL Commerz"
+  },
+  {
+   "fieldname": "column_break_jbnb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ssl_store_password",
+   "fieldtype": "Data",
+   "label": "SSL Store Password"
+  },
+  {
+   "fieldname": "ssl_commerz_section",
+   "fieldtype": "Section Break",
+   "label": "SSL Commerz"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_sandbox",
+   "fieldtype": "Check",
+   "label": "Is Sandbox"
+  },
+  {
+   "fieldname": "section_break_gaqr",
+   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-19 18:32:22.736575",
+ "modified": "2025-11-19 22:53:40.743387",
  "modified_by": "Administrator",
  "module": "Pix One",
  "name": "PixOne System Settings",

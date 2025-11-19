@@ -128,16 +128,11 @@ def initiate_payment():
 def get_sslcommerz_settings():
     """Get SSLCommerz configuration from site config or database"""
     # Try to get from site config first
-    store_id = frappe.conf.get('sslcommerz_store_id')
-    store_pass = frappe.conf.get('sslcommerz_store_pass')
-    is_sandbox = frappe.conf.get('sslcommerz_sandbox', True)
-
-    # If not in config, use default test credentials
-    if not store_id or not store_pass:
-        store_id = 'testbox'
-        store_pass = 'qwerty'
-        is_sandbox = True
-
+    sslcommerz_settings = frappe.get_doc('PixOne System Settings')
+    store_id = sslcommerz_settings.ssl_store_id
+    store_pass = sslcommerz_settings.ssl_store_password
+    is_sandbox = sslcommerz_settings.is_sandbox
+    
     return {
         'store_id': store_id,
         'store_pass': store_pass,
