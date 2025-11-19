@@ -4,7 +4,7 @@ from sslcommerz_lib import SSLCOMMERZ
 import json
 import uuid
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def initiate_payment():
     """
     Initiate SSLCommerz payment session
@@ -71,9 +71,9 @@ def initiate_payment():
             'total_amount': float(payment_data.get('total_amount')),
             'currency': payment_data.get('currency', 'BDT'),
             'tran_id': tran_id,
-            'success_url': f"{site_url}/api/method/pix_one.api.payments.payment-success.payment-success.service.payment_success",
-            'fail_url': f"{site_url}/api/method/pix_one.api.payments.payment-fail.payment-fail.service.payment_fail",
-            'cancel_url': f"{site_url}/api/method/pix_one.api.payments.payment-cancel.payment-cancel.service.payment_cancel",
+            'success_url': f"{site_url}/api/method/pix_one.api.payments.payment_success.payment_success_service.payment_success",
+            'fail_url': f"{site_url}/api/method/pix_one.api.payments.payment_fail.payment_fail_service.payment_fail",
+            'cancel_url': f"{site_url}/api/method/pix_one.api.payments.payment_cancel.payment_cancel_service.payment_cancel",
             'emi_option': 0,
             'cus_name': payment_data.get('cus_name'),
             'cus_email': payment_data.get('cus_email'),
