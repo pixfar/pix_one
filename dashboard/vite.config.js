@@ -27,6 +27,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
+  base: '/assets/pix_one/dashboard/',
   build: {
     outDir: '../pix_one/public/dashboard',
     emptyOutDir: true,

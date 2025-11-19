@@ -15,9 +15,11 @@ import { LayoutProvider } from './context/LayoutProvider'
 
 const queryClient = new QueryClient()
 
+// url="http://localhost:5173"
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <FrappeProvider url="http://localhost:5173">
+    <FrappeProvider > 
       <QueryClientProvider client={queryClient}>
         <LayoutProvider>
           <ThemeProvider>

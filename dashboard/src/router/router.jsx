@@ -21,4 +21,6 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
         path: '/my-dashboard/profile'
     }
-])
+], {
+    basename: '/pixone'
+})

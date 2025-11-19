@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/assets/pix_one/dashboard/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dashboard</title>
-    <script type="module" crossorigin src="/assets/pix_one/dashboard/assets/index-C42oMLVd.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/pix_one/dashboard/assets/index-Dmhfgqhh.css">
+    <title>{{ title or "Dashboard - Pix One" }}</title>
+    {% if css_file %}
+    <link rel="stylesheet" crossorigin href="{{ css_file }}">
+    {% endif %}
   </head>
   <body>
     <div id="root"></div>
     <script>window.csrf_token = '{{ frappe.session.csrf_token }}';</script>
+    {% if js_file %}
+    <script type="module" crossorigin src="{{ js_file }}"></script>
+    {% endif %}
   </body>
 </html>
