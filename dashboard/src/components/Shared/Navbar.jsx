@@ -77,10 +77,10 @@ const Navbar = () => {
                     {/* Links */}
                     <div className="flex items-center gap-8">
                         {[
-                            { label: "Home", href: "/" },
+                            { label: "Home", href: "/pixone" },
                             { label: "Industries", href: "#" },
                             { label: "All Apps", href: "#" },
-                            { label: "Pricing", href: "/pricing" },
+                            { label: "Pricing", href: "/pixone/pricing" },
                             { label: "Learning", href: "#" },
                             { label: "Help", href: "#" },
                             { label: "About Us", href: "#" }
@@ -95,13 +95,19 @@ const Navbar = () => {
                         ))}
                     </div>
                     <div>
-                        {["Profile", "Try it Now"].map((item) => (
+                        {/* "Profile", "Try it Now" */}
+                        {[
+                            { label: "Profile" , href: "profile"},
+                            // Open in new tab
+                            { label: "Try it Now" , href: "https://demo.pixfar.com", target: "_blank" } 
+                        ].map((item) => (
                             <Button
-                                key={item}
-                                variant={item === "Profile" ? "outline" : "default"}
+                                key={item.label}
+                                variant={item.label === "Profile" ? "outline" : "default"}
                                 className={`ml-4 px-4 py-2 text-sm font-medium bg-white text-black hover:bg-gray-200 transition-colors ${item === "Profile" ? "border-white/30" : ""}`}   
+                                onClick={() => { window.location.href = item.href; }}
                             >
-                                {item}
+                                {item.label}
                             </Button>
                         ))}
                     </div>

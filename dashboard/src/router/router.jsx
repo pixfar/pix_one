@@ -3,6 +3,7 @@ import Layout from "../layout/Layout";
 import Home from "../pages/Home/Home";
 import Dashboard from "@/pages/Dashboard/Dashboard";
 import Pricing from "@/pages/Pricing/Pricing";
+import Profile from "@/pages/Profile/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
                 element: <Pricing />,
                 path: '/pricing'
             },
+            {
+                element: <Profile />,
+                path:'/profile'
+            }
 
         ]
     },
