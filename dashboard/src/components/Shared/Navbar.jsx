@@ -76,13 +76,21 @@ const Navbar = () => {
 
                     {/* Links */}
                     <div className="flex items-center gap-8">
-                        {["Home", "Industries", "All Apps", "Pricing", "Learning", "Help", "About Us"].map((item) => (
+                        {[
+                            { label: "Home", href: "/" },
+                            { label: "Industries", href: "#" },
+                            { label: "All Apps", href: "#" },
+                            { label: "Pricing", href: "/pricing" },
+                            { label: "Learning", href: "#" },
+                            { label: "Help", href: "#" },
+                            { label: "About Us", href: "#" }
+                        ].map((item) => (
                             <a
-                                key={item}
-                                href="#"
+                                key={item.label}
+                                href={item.href}
                                 className="text-white text-base font-medium hover:text-gray-300 transition-colors"
                             >
-                                {item}
+                                {item.label}
                             </a>
                         ))}
                     </div>
