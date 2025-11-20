@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Button } from '../ui/button';
 
 const Navbar = () => {
     const [isSticky, setIsSticky] = useState(false);
@@ -23,7 +24,7 @@ const Navbar = () => {
                 : "top-[-80px] bg-transparent translate-y-6"
                 }`}
         >
-            <div className="max-w-3xl mx-auto px-6 py-4">
+            <div className="max-w-[1280px] mx-auto py-4">
                 <div
                     className={`flex items-center justify-between px-8 py-3 border border-white/10 rounded-full backdrop-blur-md transition-all duration-500 
                         ${isSticky ? "bg-[#0d0d0d]/80 border-gray-700 shadow-lg shadow-black/40" : "bg-white/5 border-white/10"
@@ -70,12 +71,12 @@ const Navbar = () => {
                                 />
                             </svg>
                         </div>
-                        <span className="text-white text-xl font-medium">Pixfar ERP</span>
+                        <span className="text-white text-xl font-medium">PixOne</span>
                     </div>
 
                     {/* Links */}
                     <div className="flex items-center gap-8">
-                        {["Home", "Service", "Package"].map((item) => (
+                        {["Home", "Industries", "All Apps", "Pricing", "Learning", "Help", "About Us"].map((item) => (
                             <a
                                 key={item}
                                 href="#"
@@ -83,6 +84,17 @@ const Navbar = () => {
                             >
                                 {item}
                             </a>
+                        ))}
+                    </div>
+                    <div>
+                        {["Profile", "Try it Now"].map((item) => (
+                            <Button
+                                key={item}
+                                variant={item === "Profile" ? "outline" : "default"}
+                                className={`ml-4 px-4 py-2 text-sm font-medium bg-white text-black hover:bg-gray-200 transition-colors ${item === "Profile" ? "border-white/30" : ""}`}   
+                            >
+                                {item}
+                            </Button>
                         ))}
                     </div>
                 </div>
