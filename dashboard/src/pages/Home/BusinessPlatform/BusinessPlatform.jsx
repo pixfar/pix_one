@@ -4,7 +4,7 @@ import ServiceTools from "./ServiceTools/ServiceTools";
 
 const BusinessPlatform = () => {
     return (
-        <div className="min-h-screen bg-[#0a0a14] text-white">
+        <div className="min-h-screen bg-background text-foreground">
             {/* Hero Section */}
             <div className="py-16 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-4xl mx-auto text-center">
@@ -14,7 +14,7 @@ const BusinessPlatform = () => {
                         <span className="relative inline-block">
                             {/* Highlight background */}
                             {/* <span
-                                className="absolute inset-x-0 bottom-1 h-4 bg-[#FFB629] -rotate-2 rounded-sm"
+                                className="absolute inset-x-0 bottom-1 h-4 bg-[color:var(--brand-gold)] -rotate-2 rounded-sm"
                                 style={{ zIndex: 0 }}
                             ></span> */}
                             {/* Foreground text */}
@@ -41,10 +41,10 @@ const BusinessPlatform = () => {
 
                     {/* CTA Buttons and Pricing Note */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 relative">
-                        <button className="px-6 py-3 bg-[#714B67] text-white font-medium rounded hover:bg-[#563d4f] transition-colors">
+                        <button className="px-6 py-3 bg-[color:var(--brand-purple)] text-foreground font-medium rounded hover:bg-[color:var(--brand-purple)]/90 transition-colors">
                             Start now - it's free
                         </button>
-                        <button className="px-6 py-3 bg-[#F3F4F6] text-[#714B67] font-medium border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                        <button className="px-6 py-3 bg-card text-foreground font-medium border border-border rounded hover:bg-surface-hover transition-colors">
                             Meet an advisor
                         </button>
 

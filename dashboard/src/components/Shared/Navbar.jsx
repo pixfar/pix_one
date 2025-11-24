@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
+import { useAuth } from '../../context/AuthContext';
+import { ROUTES } from '../../config/routes.constants';
+import { useTheme } from '../../context/ThemeProvider';
+import { Moon, Sun } from 'lucide-react';
 
 const Navbar = () => {
     const [isSticky, setIsSticky] = useState(false);
+    const navigate = useNavigate();
+    const { isAuthenticated, user, logout } = useAuth();
+    const { resolvedTheme, setTheme } = useTheme();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -26,8 +34,8 @@ const Navbar = () => {
         >
             <div className="max-w-[1280px] mx-auto py-4">
                 <div
-                    className={`flex items-center justify-between px-8 py-3 border border-white/10 rounded-full backdrop-blur-md transition-all duration-500 
-                        ${isSticky ? "bg-[#0d0d0d]/80 border-gray-700 shadow-lg shadow-black/40" : "bg-white/5 border-white/10"
+                    className={`flex items-center justify-between px-8 py-3 border rounded-full backdrop-blur-md transition-all duration-500
+                        ${isSticky ? "bg-background/80 border-border shadow-lg" : "bg-background/5 border-border"
                         }`}
                 >
                     {/* Logo */}
@@ -39,13 +47,13 @@ const Navbar = () => {
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="w-full h-full"
                             >
-                                <circle cx="16" cy="16" r="3" fill="white" />
+                                <circle cx="16" cy="16" r="3" className="fill-foreground" />
                                 <ellipse
                                     cx="16"
                                     cy="16"
                                     rx="12"
                                     ry="5"
-                                    stroke="white"
+                                    className="stroke-foreground"
                                     strokeWidth="2"
                                     fill="none"
                                 />
@@ -54,7 +62,7 @@ const Navbar = () => {
                                     cy="16"
                                     rx="12"
                                     ry="5"
-                                    stroke="white"
+                                    className="stroke-foreground"
                                     strokeWidth="2"
                                     fill="none"
                                     transform="rotate(60 16 16)"
@@ -64,14 +72,14 @@ const Navbar = () => {
                                     cy="16"
                                     rx="12"
                                     ry="5"
-                                    stroke="white"
+                                    className="stroke-foreground"
                                     strokeWidth="2"
                                     fill="none"
                                     transform="rotate(120 16 16)"
                                 />
                             </svg>
                         </div>
-                        <span className="text-white text-xl font-medium">PixOne</span>
+                        <span className="text-foreground text-xl font-medium">PixOne</span>
                     </div>
 
                     {/* Links */}
@@ -88,28 +96,66 @@ const Navbar = () => {
                             <a
                                 key={item.label}
                                 href={item.href}
-                                className="text-white text-base font-medium hover:text-gray-300 transition-colors"
+                                className="text-foreground text-base font-medium hover:text-muted-foreground transition-colors"
                             >
                                 {item.label}
                             </a>
                         ))}
                     </div>
-                    <div>
-                        {/* "Profile", "Try it Now" */}
-                        {[
-                            { label: "Profile" , href: "profile"},
-                            // Open in new tab
-                            { label: "Try it Now" , href: "https://demo.pixfar.com", target: "_blank" } 
-                        ].map((item) => (
-                            <Button
-                                key={item.label}
-                                variant={item.label === "Profile" ? "outline" : "default"}
-                                className={`ml-4 px-4 py-2 text-sm font-medium bg-white text-black hover:bg-gray-200 transition-colors ${item === "Profile" ? "border-white/30" : ""}`}   
-                                onClick={() => { window.location.href = item.href; }}
-                            >
-                                {item.label}
-                            </Button>
-                        ))}
+                    <div className="flex items-center gap-4">
+                        {/* Theme Toggle Button */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="w-9 h-9 rounded-full bg-transparent text-foreground border border-border hover:bg-accent transition-colors"
+                            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+                        >
+                            {resolvedTheme === 'dark' ? (
+                                <Sun className="h-4 w-4" />
+                            ) : (
+                                <Moon className="h-4 w-4" />
+                            )}
+                            <span className="sr-only">Toggle theme</span>
+                        </Button>
+
+                        {isAuthenticated ? (
+                            <>
+                                <Button
+                                    variant="outline"
+                                    className="px-4 py-2 text-sm font-medium"
+                                    onClick={() => navigate(ROUTES.DASHBOARD)}
+                                >
+                                    Dashboard
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="px-4 py-2 text-sm font-medium"
+                                    onClick={async () => {
+                                        await logout();
+                                        navigate(ROUTES.HOME);
+                                    }}
+                                >
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="outline"
+                                    className="px-4 py-2 text-sm font-medium"
+                                    onClick={() => navigate(ROUTES.SIGN_IN)}
+                                >
+                                    Sign In
+                                </Button>
+                                <Button
+                                    variant="default"
+                                    className="px-4 py-2 text-sm font-medium"
+                                    onClick={() => window.open("https://demo.pixfar.com", "_blank")}
+                                >
+                                    Try it Now
+                                </Button>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

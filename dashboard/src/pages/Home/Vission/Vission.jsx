@@ -1,7 +1,7 @@
 
 const Vission = () => {
     return (
-        <div className="min-h-screen text-white bg-[#0a0a14]">
+        <div className="min-h-screen text-foreground bg-background">
             <div className="max-w-[1344px] mx-auto  px-4 md:px-6 py-16 md:py-[100px]">
                 {/* Main heading */}
                 <h1 className="text-2xl md:text-4xl font-bold mb-12 max-w-3xl leading-tight">
@@ -13,21 +13,21 @@ const Vission = () => {
                     {/* Left side - Stacked cards */}
                     <div className="relative space-y-4">
                         {/* Connecting vertical line + arrow */}
-                        <div className="absolute left-[27.5px] top-0 bottom-4 w-[2px] bg-blue-500  -translate-x-1/2 rounded-full">
+                        <div className="absolute left-[27.5px] top-0 bottom-4 w-[2px] bg-primary  -translate-x-1/2 rounded-full">
                             {/* Arrow tip */}
-                            <div className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-blue-500"></div>
+                            <div className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-primary"></div>
                         </div>
 
-                        <div className="absolute right-[25.5px] top-0 bottom-4 w-[2px] bg-blue-500 -translate-x-1/2 rounded-full">
+                        <div className="absolute right-[25.5px] top-0 bottom-4 w-[2px] bg-primary -translate-x-1/2 rounded-full">
                             {/* Arrow tip */}
-                            <div className="absolute bottom-[-7px] left-1/2 -translate-x-1/2 w-0 h-0 
-                                            border-l-[6px] border-r-[6px] border-b-[8px] 
-                                            border-l-transparent border-r-transparent border-b-blue-500">
+                            <div className="absolute bottom-[-7px] left-1/2 -translate-x-1/2 w-0 h-0
+                                            border-l-[6px] border-r-[6px] border-b-[8px]
+                                            border-l-transparent border-r-transparent border-b-primary">
                             </div>
                         </div>
 
                         {/* SAP Business AI Card */}
-                        <div className="bg-purple-200 p-6 rounded-lg relative overflow-hidden">
+                        <div className="bg-[color:var(--brand-purple)] p-6 rounded-lg relative overflow-hidden">
                             {/* SVG Background */}
                             <div className="absolute inset-0 opacity-20">
                                 <svg className="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
@@ -44,7 +44,7 @@ const Vission = () => {
                                 </svg>
                             </div>
 
-                            <h3 className="text-xl font-bold text-black relative z-10 text-center">
+                            <h3 className="text-xl font-bold text-foreground relative z-10 text-center">
                                 SAP Business AI
                             </h3>
                         </div>
@@ -52,7 +52,7 @@ const Vission = () => {
 
 
                         {/* SAP Business Data Cloud Card */}
-                        <div className="bg-blue-500 p-6 rounded-lg relative overflow-hidden">
+                        <div className="bg-primary p-6 rounded-lg relative overflow-hidden">
                             <div className="absolute inset-0 opacity-20">
                                 <svg className="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
                                     <defs>
@@ -64,12 +64,12 @@ const Vission = () => {
                                 </svg>
                             </div>
                             <div className="flex items-center justify-center relative z-10">
-                                <h3 className="text-xl font-bold text-black text-white">SAP Business Data Cloud</h3>
+                                <h3 className="text-xl font-bold text-primary-foreground">SAP Business Data Cloud</h3>
                             </div>
                         </div>
 
                         {/* SAP Business Applications Card */}
-                        <div className="bg-blue-300 p-6 rounded-lg relative overflow-hidden">
+                        <div className="bg-accent p-6 rounded-lg relative overflow-hidden">
                             <div className="absolute inset-0 opacity-15">
                                 <svg className="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
                                     <defs>
@@ -80,11 +80,11 @@ const Vission = () => {
                                     <rect width="400" height="100" fill="url(#icons)" />
                                 </svg>
                             </div>
-                            <h3 className="text-xl font-bold text-black relative z-10 text-center">SAP Business Applications</h3>
+                            <h3 className="text-xl font-bold text-accent-foreground relative z-10 text-center">SAP Business Applications</h3>
                         </div>
 
                         {/* Bottom border with text */}
-                        <div className="px-6 py-4 bg-white/10 rounded-b-lg  md:w-[90%] border-2 border-blue-500 border-t-0 md:mx-auto text-center">
+                        <div className="px-6 py-4 bg-muted/10 rounded-b-lg  md:w-[90%] border-2 border-primary border-t-0 md:mx-auto text-center">
                             <span className="text-sm font-medium">
                                 powered by Pixfar ERP Solution Platform
                             </span>
@@ -96,7 +96,7 @@ const Vission = () => {
                     <div className="space-y-6">
                         <div>
                             <h2 className="text-2xl font-bold mb-4">Built for what your business needs next</h2>
-                            <p className="text-gray-300 leading-relaxed">
+                            <p className="text-muted-foreground leading-relaxed">
                                 SAP Business Suite unites your AI, data, apps, and platform to help you adapt, innovate, and move
                                 forward with clarity.
                             </p>
@@ -104,10 +104,10 @@ const Vission = () => {
 
                         {/* button */}
                         <div className="flex flex-col gap-3">
-                            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors w-max">
+                            <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2 px-6 rounded-lg transition-colors w-max">
                                 Explore SAP Business Suite
                             </button>
-                            <button className="border-2 border-blue-600 hover:bg-blue-500 hover:text-black font-semibold py-2 px-6 rounded-lg transition-colors w-max">
+                            <button className="border-2 border-primary hover:bg-primary hover:text-primary-foreground font-semibold py-2 px-6 rounded-lg transition-colors w-max">
                                 View SAP Business Suite packages
                             </button>
                         </div>

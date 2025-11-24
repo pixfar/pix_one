@@ -12,6 +12,7 @@ import {
 import { ThemeProvider } from './context/ThemeProvider'
 import { DirectionProvider } from './context/DirectionProvider'
 import { LayoutProvider } from './context/LayoutProvider'
+import { AuthProvider } from './context/AuthContext'
 
 const queryClient = new QueryClient()
 
@@ -19,15 +20,17 @@ const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <FrappeProvider > 
+    <FrappeProvider >
       <QueryClientProvider client={queryClient}>
-        <LayoutProvider>
-          <ThemeProvider>
-            <DirectionProvider>
-              <RouterProvider router={router} />
-            </DirectionProvider>
-          </ThemeProvider>
-        </LayoutProvider>
+        <AuthProvider>
+          <LayoutProvider>
+            <ThemeProvider>
+              <DirectionProvider>
+                <RouterProvider router={router} />
+              </DirectionProvider>
+            </ThemeProvider>
+          </LayoutProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </FrappeProvider>
   </StrictMode>,

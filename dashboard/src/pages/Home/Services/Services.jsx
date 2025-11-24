@@ -58,12 +58,12 @@ const servicesData = [
 ]
 const Services = () => {
     return (
-        <section className="w-full bg-black text-white ">
+        <section className="w-full bg-background text-foreground">
             <div className="max-w-[1344px] mx-auto py-16 md:py-[100px] px-4 md:px-6">
                 {/* Header Section */}
                 <div className="mb-12">
                     <h2 className="text-2xl md:text-4xl font-bold  mb-4">Support every team and strengthen every process</h2>
-                    <p className="text-gray-300 ">
+                    <p className="text-muted-foreground">
                         Equip every team with the tools to adapt, scale, and deliver real results.
                     </p>
                 </div>

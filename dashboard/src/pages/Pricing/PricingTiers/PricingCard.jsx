@@ -1,56 +1,58 @@
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, Star } from 'lucide-react';
 
 const PricingCard = ({ plan, isPopular = false }) => {
-  const features = [
-    'All apps',
-    'Odoo Online',
-    'Unlimited users',
-    'Unlimited support',
-    'Hosting and maintenance',
-    'No hidden costs',
-    'No limit on features',
-    'No limit on data'
-  ];
+  // Use features from API if available, otherwise use default list
+  const features = plan.features && plan.features.length > 0
+    ? plan.features.map(f => ({
+        name: f.feature_name,
+        isKey: f.is_key_feature === 1
+      }))
+    : [
+        { name: 'All apps', isKey: false },
+        { name: 'Unlimited users', isKey: false },
+        { name: 'Unlimited support', isKey: false },
+        { name: 'Hosting and maintenance', isKey: false }
+      ];
 
   return (
     <div
-      className={`relative flex flex-col bg-white/5 border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl ${
+      className={`relative flex flex-col bg-card border rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl ${
         isPopular
-          ? 'border-blue-500 shadow-xl shadow-blue-500/20 scale-105'
-          : 'border-white/10 hover:border-blue-500/40'
+          ? 'border-primary shadow-xl shadow-primary/20 scale-105'
+          : 'border-border hover:border-primary/40'
       }`}
     >
       {/* Popular Badge */}
       {isPopular && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-full shadow-lg">
+          <span className="px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-full shadow-lg">
             Most Popular
           </span>
         </div>
       )}
 
       {/* Plan Name */}
-      <h3 className="text-2xl font-bold text-white mb-2">{plan.plan_name}</h3>
+      <h3 className="text-2xl font-bold text-foreground mb-2">{plan.plan_name}</h3>
 
       {/* Price */}
       <div className="mb-6">
         <div className="flex items-baseline gap-2">
-          <span className="text-5xl font-bold text-white">$</span>
-          <span className="text-6xl font-bold text-white">
+          <span className="text-5xl font-bold text-foreground">$</span>
+          <span className="text-6xl font-bold text-foreground">
             {Math.floor(plan.price)}
           </span>
-          <span className="text-2xl font-bold text-white">
+          <span className="text-2xl font-bold text-foreground">
             .{((plan.price % 1) * 100).toFixed(0).padStart(2, '0')}
           </span>
         </div>
-        <p className="text-gray-400 mt-2">/ user / month</p>
+        <p className="text-muted-foreground mt-2">/ user / month</p>
       </div>
 
       {/* Short Description */}
       <div className="mb-8">
         {plan.short_description?.split('\n').map((line, idx) => (
-          <p key={idx} className="text-gray-300 text-sm leading-relaxed">
+          <p key={idx} className="text-muted-foreground text-sm leading-relaxed">
             {line}
           </p>
         ))}
@@ -61,11 +63,20 @@ const PricingCard = ({ plan, isPopular = false }) => {
         <ul className="space-y-4">
           {features.map((feature, idx) => (
             <li key={idx} className="flex items-start gap-3">
-              <Check
-                size={20}
-                className="text-blue-400 mt-0.5 flex-shrink-0"
-              />
-              <span className="text-gray-300 text-sm">{feature}</span>
+              {feature.isKey ? (
+                <Star
+                  size={20}
+                  className="text-yellow-400 mt-0.5 flex-shrink-0 fill-yellow-400"
+                />
+              ) : (
+                <Check
+                  size={20}
+                  className="text-blue-400 mt-0.5 flex-shrink-0"
+                />
+              )}
+              <span className={`text-sm ${feature.isKey ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                {feature.name}
+              </span>
             </li>
           ))}
         </ul>
@@ -73,7 +84,7 @@ const PricingCard = ({ plan, isPopular = false }) => {
 
       {/* Valid Days */}
       {plan.valid_days && (
-        <p className="text-sm text-gray-400 mb-6 text-center">
+        <p className="text-sm text-muted-foreground mb-6 text-center">
           Valid for {plan.valid_days} days
         </p>
       )}
@@ -82,8 +93,8 @@ const PricingCard = ({ plan, isPopular = false }) => {
       <button
         className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
           isPopular
-            ? 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-500/30'
-            : 'bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-blue-500/50'
+            ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/30'
+            : 'bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border hover:border-primary/50'
         }`}
       >
         Get Started

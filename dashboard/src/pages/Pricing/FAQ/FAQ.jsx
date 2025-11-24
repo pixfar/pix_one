@@ -72,10 +72,10 @@ const FAQ = () => {
       <div className="max-w-4xl mx-auto">
         {/* Section Title */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Any Questions?
           </h2>
-          <p className="text-gray-400 text-lg">
+          <p className="text-muted-foreground text-lg">
             If the answer to your question is not on this page, please contact
             our Account Managers
           </p>
@@ -86,32 +86,32 @@ const FAQ = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-blue-500/40 transition-all duration-300"
+              className="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/40 transition-all duration-300"
             >
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex items-center justify-between p-6 text-left"
               >
-                <span className="text-white font-semibold text-lg pr-4">
+                <span className="text-foreground font-semibold text-lg pr-4">
                   {faq.question}
                 </span>
                 {openIndex === index ? (
                   <ChevronUp
                     size={24}
-                    className="text-blue-400 flex-shrink-0"
+                    className="text-primary flex-shrink-0"
                   />
                 ) : (
                   <ChevronDown
                     size={24}
-                    className="text-gray-400 flex-shrink-0"
+                    className="text-muted-foreground flex-shrink-0"
                   />
                 )}
               </button>
 
               {openIndex === index && (
                 <div className="px-6 pb-6">
-                  <div className="pt-4 border-t border-white/10">
-                    <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+                  <div className="pt-4 border-t border-border">
+                    <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
                   </div>
                 </div>
               )}
@@ -121,7 +121,7 @@ const FAQ = () => {
 
         {/* Contact CTA */}
         <div className="mt-12 text-center">
-          <button className="px-8 py-4 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 shadow-lg shadow-blue-500/30 transition-all duration-300">
+          <button className="px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 shadow-lg shadow-primary/30 transition-all duration-300">
             Contact Our Team
           </button>
         </div>

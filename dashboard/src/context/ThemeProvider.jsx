@@ -81,9 +81,9 @@ export function ThemeProvider({
     }
 
     return (
-        <ThemeContext value={contextValue} {...props}>
+        <ThemeContext.Provider value={contextValue} {...props}>
             {children}
-        </ThemeContext>
+        </ThemeContext.Provider>
     )
 }
 

@@ -6,7 +6,7 @@ import FAQ from './FAQ/FAQ';
 
 const Pricing = () => {
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen bg-background'>
       <PricingHero />
       <PricingTiers />
       <CostComparison />

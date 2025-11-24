@@ -42,7 +42,7 @@ const cards = [
 
 const Tech = () => {
     return (
-        <div className="min-h-screen bg-black text-white py-16 md:py-[100px] px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-background text-foreground py-16 md:py-[100px] px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 {/* Header */}
                 <div className="mb-16 text-center relative">

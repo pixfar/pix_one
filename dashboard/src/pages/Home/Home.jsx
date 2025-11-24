@@ -7,7 +7,7 @@ import Vission from "./Vission/Vission";
 
 const Home = () => {
   return (
-    <div>
+    <div className="bg-background">
       <Banner />
       <Vission />
       <Services />

@@ -30,7 +30,7 @@ def get_subscription_plans(page=1, limit=10, sort=None, order=None, search=None,
         sort=sort,
         order=order,
         search=search,
-        fields=fields,
+        fields=[ 'name', 'plan_name', 'short_description', 'view_order', 'valid_days',  'price'],
         filters=filters
     )
 
@@ -51,6 +51,15 @@ def get_subscription_plans(page=1, limit=10, sort=None, order=None, search=None,
         pagination=pagination,
         search_fields=search_fields
     )
+
+    # Add Child Tables data
+    for plan in plans:
+        plan['features'] = BaseDataService.get_list_data(
+            doctype="Subscription Plan Features",
+            fields=['feature_name', 'is_key_feature', 'idx'],
+            filters={"parent": plan['name']},
+            order_by="idx asc"
+        )
 
     # Format response
     response = ResponseFormatter.paginated(
