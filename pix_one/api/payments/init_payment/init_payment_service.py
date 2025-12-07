@@ -31,13 +31,7 @@ def initiate_payment(planId = None):
         settings = get_sslcommerz_settings()
         sslcz = SSLCOMMERZ(settings)
         site_url = frappe.utils.get_url()
-
-
         tran_id = generate_transaction_id()
-
-        print("User Details:", user)
-        print("Plan Details:", planDetails)
-        
 
         # Extract contact information from user data
         contact = user[0].get('contacts', [{}])[0] if user and len(user) > 0 and user[0].get('contacts') else {}
@@ -87,9 +81,6 @@ def initiate_payment(planId = None):
             'value_c': customer_email,  # Customer Email/ID
             'value_d': 'Initial Payment'  # Transaction Type
         }
-
-        print("Post Body for SSLCommerz:", post_body)
-
         # Create SSLCommerz session
         response = sslcz.createSession(post_body)
         if not response:
