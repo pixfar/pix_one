@@ -1,0 +1,384 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:SUB-.YYYY.-.#####",
+ "creation": "2025-11-04 01:57:24.244023",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "subscription_section",
+  "subscription_id",
+  "status",
+  "col_break1",
+  "app_name",
+  "auto_renew",
+  "user_section",
+  "customer_id",
+  "created_by",
+  "col_break2",
+  "plan_section",
+  "plan_name",
+  "billing_interval",
+  "col_break3",
+  "pricing_section",
+  "price",
+  "setup_fee",
+  "column_break_pricing",
+  "total_amount_paid",
+  "last_payment_amount",
+  "date_section",
+  "start_date",
+  "end_date",
+  "trial_ends_on",
+  "column_break_dates",
+  "next_billing_date",
+  "last_payment_date",
+  "payment_section",
+  "cancellation_date",
+  "column_break_cancel",
+  "cancellation_reason",
+  "section_break_cancel",
+  "cancellation_notes",
+  "usage_section",
+  "current_users",
+  "current_storage_mb",
+  "column_break_usage",
+  "api_calls_this_month",
+  "license_section",
+  "license_key",
+  "column_break_license",
+  "instance_url",
+  "timestamps_section",
+  "creation_date",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "SUB-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "SUB-.YYYY.-"
+  },
+  {
+   "fieldname": "subscription_section",
+   "fieldtype": "Section Break",
+   "label": "Subscription Information"
+  },
+  {
+   "fieldname": "subscription_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Subscription ID",
+   "read_only": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nPending Payment\nTrial\nActive\nPast Due\nExpired\nCancelled\nSuspended",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "app_name",
+   "fieldtype": "Data",
+   "label": "App Name",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_renew",
+   "fieldtype": "Check",
+   "label": "Auto Renew"
+  },
+  {
+   "fieldname": "user_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Information"
+  },
+  {
+   "fieldname": "customer_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "plan_section",
+   "fieldtype": "Section Break",
+   "label": "Plan Information"
+  },
+  {
+   "fieldname": "plan_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Subscription Plan",
+   "options": "SaaS Subscription Plan",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "plan_name.billing_interval",
+   "fieldname": "billing_interval",
+   "fieldtype": "Data",
+   "label": "Billing Interval",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fetch_from": "plan_name.price",
+   "fieldname": "price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Plan Price",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "plan_name.setup_fee",
+   "fieldname": "setup_fee",
+   "fieldtype": "Currency",
+   "label": "Setup Fee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_amount_paid",
+   "fieldtype": "Currency",
+   "label": "Total Amount Paid",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_payment_amount",
+   "fieldtype": "Currency",
+   "label": "Last Payment Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "date_section",
+   "fieldtype": "Section Break",
+   "label": "Subscription Period"
+  },
+  {
+   "default": "Today",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "trial_ends_on",
+   "fieldtype": "Date",
+   "label": "Trial Ends On"
+  },
+  {
+   "fieldname": "column_break_dates",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "next_billing_date",
+   "fieldtype": "Date",
+   "label": "Next Billing Date"
+  },
+  {
+   "fieldname": "last_payment_date",
+   "fieldtype": "Date",
+   "label": "Last Payment Date",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "payment_section",
+   "fieldtype": "Section Break",
+   "label": "Cancellation Details"
+  },
+  {
+   "fieldname": "cancellation_date",
+   "fieldtype": "Date",
+   "label": "Cancellation Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cancel",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cancellation_reason",
+   "fieldtype": "Data",
+   "label": "Cancellation Reason"
+  },
+  {
+   "fieldname": "section_break_cancel",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cancellation_notes",
+   "fieldtype": "Text",
+   "label": "Cancellation Notes"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "usage_section",
+   "fieldtype": "Section Break",
+   "label": "Usage Statistics"
+  },
+  {
+   "default": "0",
+   "fieldname": "current_users",
+   "fieldtype": "Int",
+   "label": "Current Users"
+  },
+  {
+   "default": "0",
+   "fieldname": "current_storage_mb",
+   "fieldtype": "Float",
+   "label": "Current Storage (MB)"
+  },
+  {
+   "fieldname": "column_break_usage",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "api_calls_this_month",
+   "fieldtype": "Int",
+   "label": "API Calls This Month"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "license_section",
+   "fieldtype": "Section Break",
+   "label": "License & Instance"
+  },
+  {
+   "fieldname": "license_key",
+   "fieldtype": "Data",
+   "label": "License Key",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_license",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "instance_url",
+   "fieldtype": "Data",
+   "label": "Instance URL"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "timestamps_section",
+   "fieldtype": "Section Break",
+   "label": "Timestamps"
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Datetime",
+   "label": "Creation Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "SaaS Subscriptions",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-11-30 21:41:32.263098",
+ "modified_by": "Administrator",
+ "module": "Pix One",
+ "name": "SaaS Subscriptions",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Subscription Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "if_owner": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Subscriber",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -24,6 +24,14 @@ def get_subscription_plans(page=1, limit=10, sort=None, order=None, search=None,
         Paginated response with subscription plans
     """
     # Get pagination parameters
+    # Always filter for active plans only
+    active_filters = {"is_active": 1,}
+    if filters:
+        if isinstance(filters, str):
+            import json
+            filters = json.loads(filters)
+        active_filters.update(filters)
+
     pagination = get_pagination_params(
         page=page,
         limit=limit,
@@ -31,31 +39,33 @@ def get_subscription_plans(page=1, limit=10, sort=None, order=None, search=None,
         order=order,
         search=search,
         fields=[ 'name', 'plan_name', 'short_description', 'view_order', 'valid_days',  'price'],
-        filters=filters
+        filters=active_filters
     )
 
     # Build cache key
     cache_key = f"subscription_plans:{pagination.page}:{pagination.limit}:{pagination.sort}:{pagination.order}:{pagination.search}"
 
     # Try to get from cache
-    cached_data = RedisCacheService.get(cache_key)
-    if cached_data:
-        return cached_data
+    # cached_data = RedisCacheService.get(cache_key)
+    # if cached_data:
+    #     return cached_data
 
     # Define search fields for subscription plans
     search_fields = ['plan_name', 'description']
 
     # Get paginated data
     plans, total_count = BaseDataService.get_paginated_data(
-        doctype="Subscription Plan",
+        doctype="SaaS Subscription Plan",
         pagination=pagination,
         search_fields=search_fields
     )
 
+    print(len(plans))
+
     # Add Child Tables data
     for plan in plans:
         plan['features'] = BaseDataService.get_list_data(
-            doctype="Subscription Plan Features",
+            doctype="SaaS Subscription Plan Features",
             fields=['feature_name', 'is_key_feature', 'idx'],
             filters={"parent": plan['name']},
             order_by="idx asc"

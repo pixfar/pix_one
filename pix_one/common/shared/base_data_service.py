@@ -10,6 +10,23 @@ from pix_one.common.shared.base_pagination import PaginationParams
 
 class BaseDataService:
     """Service for handling common data operations with pagination"""
+    @staticmethod
+    def get_current_user():
+        """Get the current user document"""
+        user = frappe.session.user
+        userInfo = BaseDataService.get_list_data(
+            doctype="User",
+            filters={"name": user},
+            fields="name, email, first_name, last_name, full_name")
+        for user in userInfo:
+            user['contacts'] = BaseDataService.get_list_data(
+                doctype="Contact",
+                fields="*",
+                filters={"email_id": user['name']},
+                order_by="modified desc"
+            )
+            user['roles'] = frappe.get_roles(user['name'])
+        return userInfo
 
     @staticmethod
     def get_paginated_data(

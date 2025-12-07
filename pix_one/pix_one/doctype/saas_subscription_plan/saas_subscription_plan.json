@@ -1,0 +1,241 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:plan_name",
+ "creation": "2025-11-04 00:29:14.613974",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "plan_name",
+  "plan_code",
+  "section_break_ggrb",
+  "short_description",
+  "section_break_status",
+  "is_active",
+  "column_break_status",
+  "sort_order",
+  "section_break_pricing",
+  "price",
+  "currency",
+  "column_break_pricing",
+  "setup_fee",
+  "billing_interval",
+  "section_break_limits",
+  "max_users",
+  "max_storage_mb",
+  "column_break_limits",
+  "max_companies",
+  "api_calls_per_hour",
+  "section_break_trial",
+  "allow_trial",
+  "column_break_trial",
+  "trial_period_days",
+  "section_break_ytxe",
+  "features",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "plan_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Plan Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "plan_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Plan Code",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_ggrb",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "short_description",
+   "fieldtype": "Small Text",
+   "label": "Plan Description"
+  },
+  {
+   "fieldname": "section_break_status",
+   "fieldtype": "Section Break",
+   "label": "Status & Order"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "column_break_status",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order"
+  },
+  {
+   "fieldname": "section_break_pricing",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Price",
+   "reqd": 1
+  },
+  {
+   "default": "BDT",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_pricing",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "setup_fee",
+   "fieldtype": "Currency",
+   "label": "Setup Fee"
+  },
+  {
+   "default": "Monthly",
+   "fieldname": "billing_interval",
+   "fieldtype": "Select",
+   "label": "Billing Interval",
+   "options": "Monthly\nQuarterly\nYearly\nLifetime",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_limits",
+   "fieldtype": "Section Break",
+   "label": "Resource Limits"
+  },
+  {
+   "default": "1",
+   "fieldname": "max_users",
+   "fieldtype": "Int",
+   "label": "Max Users"
+  },
+  {
+   "default": "1024",
+   "fieldname": "max_storage_mb",
+   "fieldtype": "Int",
+   "label": "Max Storage (MB)"
+  },
+  {
+   "fieldname": "column_break_limits",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "max_companies",
+   "fieldtype": "Int",
+   "label": "Max Companies"
+  },
+  {
+   "default": "100",
+   "fieldname": "api_calls_per_hour",
+   "fieldtype": "Int",
+   "label": "API Calls Per Hour"
+  },
+  {
+   "fieldname": "section_break_trial",
+   "fieldtype": "Section Break",
+   "label": "Trial Settings"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_trial",
+   "fieldtype": "Check",
+   "label": "Allow Trial"
+  },
+  {
+   "fieldname": "column_break_trial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "allow_trial",
+   "fieldname": "trial_period_days",
+   "fieldtype": "Int",
+   "label": "Trial Period (Days)"
+  },
+  {
+   "fieldname": "section_break_ytxe",
+   "fieldtype": "Section Break",
+   "label": "Features"
+  },
+  {
+   "fieldname": "features",
+   "fieldtype": "Table",
+   "label": "Features",
+   "options": "SaaS Subscription Plan Features"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "SaaS Subscription Plan",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-11-30 21:42:13.318887",
+ "modified_by": "Administrator",
+ "module": "Pix One",
+ "name": "SaaS Subscription Plan",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Subscription Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

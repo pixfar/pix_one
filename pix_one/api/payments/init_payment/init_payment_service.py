@@ -1,107 +1,103 @@
 import frappe
 from frappe import _
+from pix_one.common.shared import BaseDataService
 from sslcommerz_lib import SSLCOMMERZ
 import json
 import uuid
+from frappe import utils
+
 
 @frappe.whitelist(allow_guest=True)
-def initiate_payment():
+def initiate_payment(planId = None):
     """
     Initiate SSLCommerz payment session
-
-    Request Body (JSON):
-    {
-        "total_amount": 100.50,
-        "currency": "BDT",
-        "product_name": "Subscription Plan",
-        "product_category": "Subscription",
-        "cus_name": "John Doe",
-        "cus_email": "john@example.com",
-        "cus_phone": "01700000000",
-        "cus_add1": "123 Main Street",
-        "cus_city": "Dhaka",
-        "cus_country": "Bangladesh",
-        "num_of_item": 1,
-        "shipping_method": "NO"
-    }
-
-    Returns:
-    {
-        "status": "success",
-        "gateway_url": "https://...",
-        "transaction_id": "...",
-        "session_key": "..."
-    }
     """
     try:
-        # Get payment data from request
-        payment_data = frappe.local.form_dict
 
-        # Parse payment data if string
-        if isinstance(payment_data, str):
-            payment_data = json.loads(payment_data)
+        user = BaseDataService.get_current_user()
+        if planId is None:
+            frappe.throw(_("Plan ID is required to initiate payment."))
 
-        # Get current user
-        user_id = frappe.session.user
+        planDetails = BaseDataService.get_single_doc(
+            doctype="SaaS Subscription Plan",
+            name=planId,
+            fields="*"
+        )
+        if not planDetails:
+            frappe.throw(_("Invalid Plan ID provided."))
+        
+        
 
-        # Validate required fields
-        required_fields = [
-            'total_amount', 'currency', 'product_name', 'product_category',
-            'cus_name', 'cus_email', 'cus_phone', 'cus_add1', 'cus_city', 'cus_country'
-        ]
-
-        missing_fields = [field for field in required_fields if not payment_data.get(field)]
-        if missing_fields:
-            frappe.throw(_("Missing required fields: {0}").format(", ".join(missing_fields)))
-
-        # Get SSLCommerz settings from Frappe Site Config or create default
         settings = get_sslcommerz_settings()
-
-        # Initialize SSLCommerz
         sslcz = SSLCOMMERZ(settings)
+        site_url = frappe.utils.get_url()
 
-        # Generate unique transaction ID
+
         tran_id = generate_transaction_id()
 
-        # Get site URL for callback URLs
-        site_url = frappe.utils.get_url()
+        print("User Details:", user)
+        print("Plan Details:", planDetails)
+        
+
+        # Extract contact information from user data
+        contact = user[0].get('contacts', [{}])[0] if user and len(user) > 0 and user[0].get('contacts') else {}
+        user_info = user[0] if user and len(user) > 0 else {}
+
+        # Get customer details with fallbacks
+        customer_name = contact.get('full_name') or user_info.get('full_name') or user_info.get('first_name', 'Guest')
+        customer_email = contact.get('email_id') or user_info.get('email', '')
+        customer_phone = contact.get('mobile_no') or contact.get('phone') or '01700000000'
+
+        # Parse address if available (format: "address-type")
+        customer_address = contact.get('address', 'Dhaka')
+        if '-' in customer_address:
+            customer_address = customer_address.split('-')[0].strip()
+
+        # Extract city from address or use default
+        customer_city = 'Dhaka'
+        customer_country = 'Bangladesh'
+
+        # Build product information
+        product_name = f"{planDetails.get('plan_name')} - {planDetails.get('billing_interval', 'Monthly')}"
+        product_category = 'SaaS Subscription'
 
         # Build post body for SSLCommerz
         post_body = {
-            'total_amount': float(payment_data.get('total_amount')),
-            'currency': payment_data.get('currency', 'BDT'),
+            'total_amount': float(planDetails.get('price')),
+            'currency': planDetails.get('currency', 'BDT'),
             'tran_id': tran_id,
             'success_url': f"{site_url}/api/method/pix_one.api.payments.payment_success.payment_success_service.payment_success",
             'fail_url': f"{site_url}/api/method/pix_one.api.payments.payment_fail.payment_fail_service.payment_fail",
             'cancel_url': f"{site_url}/api/method/pix_one.api.payments.payment_cancel.payment_cancel_service.payment_cancel",
             'emi_option': 0,
-            'cus_name': payment_data.get('cus_name'),
-            'cus_email': payment_data.get('cus_email'),
-            'cus_phone': payment_data.get('cus_phone'),
-            'cus_add1': payment_data.get('cus_add1'),
-            'cus_city': payment_data.get('cus_city'),
-            'cus_country': payment_data.get('cus_country'),
-            'shipping_method': payment_data.get('shipping_method', 'NO'),
-            'multi_card_name': payment_data.get('multi_card_name', ''),
-            'num_of_item': payment_data.get('num_of_item', 1),
-            'product_name': payment_data.get('product_name'),
-            'product_category': payment_data.get('product_category'),
-            'product_profile': payment_data.get('product_profile', 'general')
+            'cus_name': customer_name,
+            'cus_email': customer_email,
+            'cus_phone': customer_phone,
+            'cus_add1': customer_address,
+            'cus_city': customer_city,
+            'cus_country': customer_country,
+            'shipping_method': 'NO',
+            'num_of_item': 1,
+            'product_name': product_name,
+            'product_category': product_category,
+            'product_profile': 'general',
+            # Pass subscription reference through value fields
+            'value_a': planDetails.get('name', ''),  # Plan ID/Name
+            'value_b': planDetails.get('plan_code', ''),  # Plan Code
+            'value_c': customer_email,  # Customer Email/ID
+            'value_d': 'Initial Payment'  # Transaction Type
         }
 
-        # Add optional fields if provided
-        if payment_data.get('cus_add2'):
-            post_body['cus_add2'] = payment_data.get('cus_add2')
-        if payment_data.get('cus_state'):
-            post_body['cus_state'] = payment_data.get('cus_state')
-        if payment_data.get('cus_postcode'):
-            post_body['cus_postcode'] = payment_data.get('cus_postcode')
+        print("Post Body for SSLCommerz:", post_body)
 
         # Create SSLCommerz session
         response = sslcz.createSession(post_body)
+        if not response:
+            frappe.throw(_("Failed to connect to Payment gateway."))
 
-        # Log the transaction in Frappe
-        create_payment_log(tran_id, user_id, post_body, response)
+        create_saas_payment_transaction(tran_id, planId, customer_email, post_body, response)
+        create_payment_log(tran_id, customer_email, post_body, response)
+            
 
         # Check if session creation was successful
         if response.get('status') == 'SUCCESS':
@@ -143,6 +139,31 @@ def get_sslcommerz_settings():
 def generate_transaction_id():
     """Generate unique transaction ID"""
     return f"TXN-{uuid.uuid4().hex[:12].upper()}"
+
+
+def create_saas_payment_transaction(tran_id, subscription_id, user_id, request_data, response_data):
+    """Create a SaaS Payment Transaction for subscription payments"""
+    try:
+        
+        payment_transaction = frappe.get_doc({
+            'doctype': 'SaaS Payment Transaction',
+            'transaction_id': tran_id,
+            'subscription_id': subscription_id,
+            'customer_id': user_id,
+            'amount': float(request_data.get('total_amount')),
+            'currency': request_data.get('currency', 'BDT'),
+            'payment_date': utils.now(),
+            'payment_gateway': 'SSLCommerz',
+            'status': 'Initiated',
+            'transaction_type': request_data.get('value_d', 'Initial Payment'),
+            'gateway_response': json.dumps(response_data, indent=2),
+            'gateway_status': response_data.get('status'),
+            'is_recurring': False
+        })
+        payment_transaction.insert(ignore_permissions=True)
+        frappe.db.commit()
+    except Exception as e:
+        frappe.log_error(f"Failed to create SaaS payment transaction: {str(e)}", "SaaS Payment Transaction Creation")
 
 
 def create_payment_log(tran_id, user_id, request_data, response_data):

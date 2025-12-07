@@ -127,23 +127,17 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"pix_one.tasks.all"
-# 	],
-# 	"daily": [
-# 		"pix_one.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"pix_one.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"pix_one.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"pix_one.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"daily": [
+		"pix_one.tasks.subscription_scheduler.check_expired_subscriptions",
+		"pix_one.tasks.subscription_scheduler.check_trial_expiry",
+		"pix_one.tasks.subscription_scheduler.send_renewal_reminders",
+		"pix_one.tasks.subscription_scheduler.process_auto_renewals"
+	],
+	"hourly": [
+		"pix_one.tasks.subscription_scheduler.update_license_validation_status"
+	]
+}
 
 # Testing
 # -------

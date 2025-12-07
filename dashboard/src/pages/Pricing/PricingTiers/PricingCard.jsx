@@ -1,7 +1,18 @@
-import React from 'react';
-import { Check, Star } from 'lucide-react';
+import React, { useState } from 'react';
+import { Check, Star, Loader2 } from 'lucide-react';
+import { useFrappePostCall, useFrappeGetCall } from 'frappe-react-sdk';
+import { toast } from 'sonner';
+import { SUBSCRIPTION_ENDPOINTS, PAYMENT_ENDPOINTS, AUTH_ENDPOINTS } from '@/config/api.constants';
 
 const PricingCard = ({ plan, isPopular = false }) => {
+  const [loading, setLoading] = useState(false);
+
+  // Use useFrappePostCall for making API calls
+  const { call: createSubscription } = useFrappePostCall(SUBSCRIPTION_ENDPOINTS.CREATE_SUBSCRIPTION);
+  const { call: initiatePayment } = useFrappePostCall(PAYMENT_ENDPOINTS.INITIATE);
+
+  // Get current user info
+  const { data: currentUser } = useFrappeGetCall('frappe.auth.get_logged_user');
   // Use features from API if available, otherwise use default list
   const features = plan.features && plan.features.length > 0
     ? plan.features.map(f => ({
@@ -14,6 +25,98 @@ const PricingCard = ({ plan, isPopular = false }) => {
         { name: 'Unlimited support', isKey: false },
         { name: 'Hosting and maintenance', isKey: false }
       ];
+
+  const handlePurchase = async () => {
+    try {
+      setLoading(true);
+
+      // Check if user is logged in
+      if (!currentUser) {
+        toast.error('Please login to purchase a subscription');
+        setLoading(false);
+        return;
+      }
+
+      // Step 1: Create subscription
+      const subscriptionResponse = await createSubscription({
+        plan_name: plan.plan_name
+      });
+
+      if (!subscriptionResponse?.data?.subscription) {
+        throw new Error('Failed to create subscription');
+      }
+
+      const subscription = subscriptionResponse.data.subscription;
+
+      // Step 2: Get user details for payment
+      const userResponse = await fetch('/api/method/frappe.client.get', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          doctype: 'User',
+          name: currentUser
+        })
+      });
+
+      const userData = await userResponse.json();
+      const user = userData.message;
+
+      // Calculate total amount (price + setup_fee)
+      const totalAmount = (plan.price || 0) + (plan.setup_fee || 0);
+
+      // Step 3: Initiate payment with all required data
+      console.log('Initiating payment with data:', {
+        total_amount: totalAmount,
+        currency: plan.currency || 'BDT',
+        product_name: `${plan.plan_name} Subscription`,
+        subscription_id: subscription.name,
+        cus_name: user.full_name || user.name,
+        cus_email: user.email
+      });
+
+      const paymentResponse = await initiatePayment({
+        total_amount: totalAmount,
+        currency: plan.currency || 'BDT',
+        product_name: `${plan.plan_name} Subscription`,
+        product_category: 'Subscription',
+        cus_name: user.full_name || user.name,
+        cus_email: user.email,
+        cus_phone: user.phone || user.mobile_no || '01700000000',
+        cus_add1: user.location || 'N/A',
+        cus_city: 'Dhaka',
+        cus_country: 'Bangladesh',
+        num_of_item: 1,
+        shipping_method: 'NO',
+        // Subscription reference data
+        subscription_id: subscription.name,
+        plan_name: plan.plan_name,
+        transaction_type: 'Initial Payment'
+      });
+
+      console.log('Payment response:', paymentResponse);
+
+      // Check for gateway URL in different response formats
+      const gatewayUrl = paymentResponse?.message?.gateway_url ||
+                        paymentResponse?.data?.gateway_url ||
+                        paymentResponse?.gateway_url;
+
+      if (!gatewayUrl) {
+        console.error('Payment response missing gateway_url:', paymentResponse);
+        throw new Error('Payment gateway URL not received');
+      }
+
+      console.log('Redirecting to:', gatewayUrl);
+      // Redirect to SSLCommerz payment gateway
+      window.location.href = gatewayUrl;
+
+    } catch (error) {
+      console.error('Purchase failed:', error);
+      toast.error(error.message || 'Failed to initiate purchase. Please try again.');
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -91,13 +194,22 @@ const PricingCard = ({ plan, isPopular = false }) => {
 
       {/* CTA Button */}
       <button
-        className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+        onClick={handlePurchase}
+        disabled={loading}
+        className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
           isPopular
-            ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/30'
-            : 'bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border hover:border-primary/50'
+            ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed'
+            : 'bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border hover:border-primary/50 disabled:opacity-50 disabled:cursor-not-allowed'
         }`}
       >
-        Get Started
+        {loading ? (
+          <>
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Processing...
+          </>
+        ) : (
+          'Get Started'
+        )}
       </button>
     </div>
   );

@@ -18,16 +18,38 @@ export const AUTH_ENDPOINTS = {
 // Subscription & Pricing Endpoints
 export const SUBSCRIPTION_ENDPOINTS = {
   GET_PLANS: 'pix_one.api.subscription_plans.get_plans.get_plans.get_subscription_plans',
-  GET_PLAN_DETAILS: 'pix_one.api.subscription_plans.get_plan_details',
-  SUBSCRIBE: 'pix_one.api.subscription_plans.subscribe',
+  CREATE_SUBSCRIPTION: 'pix_one.api.subscriptions.create.create_subscription.create_subscription',
+  GET_MY_SUBSCRIPTIONS: 'pix_one.api.subscriptions.list.get_subscriptions.get_my_subscriptions',
+  GET_SUBSCRIPTION: 'pix_one.api.subscriptions.get.get_subscription.get_subscription',
+  GET_SUBSCRIPTION_STATS: 'pix_one.api.subscriptions.list.get_subscriptions.get_subscription_stats',
+  CANCEL_SUBSCRIPTION: 'pix_one.api.subscriptions.cancel.cancel_subscription.cancel_subscription',
+  REACTIVATE_SUBSCRIPTION: 'pix_one.api.subscriptions.cancel.cancel_subscription.reactivate_subscription',
+  INITIATE_PAYMENT: 'pix_one.api.subscriptions.create.create_subscription.initiate_subscription_payment',
 };
 
 // Payment Endpoints
 export const PAYMENT_ENDPOINTS = {
-  INITIATE: 'pix_one.api.payments.init_payment.initiate_payment',
-  SUCCESS: 'pix_one.api.payments.payment_success.handle_success',
-  CANCEL: 'pix_one.api.payments.payment_cancel.handle_cancel',
-  FAIL: 'pix_one.api.payments.payment_fail.handle_fail',
+  INITIATE: 'pix_one.api.payments.init_payment.init_payment_service.initiate_payment',
+  INITIATE_SUBSCRIPTION: 'pix_one.api.payments.init_payment.init_subscription_payment.init_subscription_payment',
+  SUCCESS: 'pix_one.api.payments.payment_success.payment_success_service.payment_success',
+  CANCEL: 'pix_one.api.payments.payment_cancel.payment_cancel_service.payment_cancel',
+  FAIL: 'pix_one.api.payments.payment_fail.payment_fail_service.payment_fail',
+};
+
+// Transaction Endpoints
+export const TRANSACTION_ENDPOINTS = {
+  GET_MY_TRANSACTIONS: 'pix_one.api.transactions.get_transactions.get_my_transactions',
+  GET_TRANSACTION: 'pix_one.api.transactions.get_transactions.get_transaction',
+  GET_TRANSACTION_STATS: 'pix_one.api.transactions.get_transactions.get_transaction_stats',
+  GET_SUBSCRIPTION_TRANSACTIONS: 'pix_one.api.transactions.get_transactions.get_subscription_transactions',
+};
+
+// License Endpoints
+export const LICENSE_ENDPOINTS = {
+  VALIDATE: 'pix_one.api.license.validate_license',
+  CHECK_STATUS: 'pix_one.api.license.check_license_status',
+  UPDATE_USAGE: 'pix_one.api.license.update_license_usage',
+  GET_DETAILS: 'pix_one.api.license.get_license_details',
 };
 
 // Business/User Management Endpoints
@@ -50,6 +72,12 @@ export const API_CONFIG = {
 export const QUERY_KEYS = {
   CURRENT_USER: ['currentUser'],
   SUBSCRIPTION_PLANS: ['subscriptionPlans'],
+  MY_SUBSCRIPTIONS: ['mySubscriptions'],
+  SUBSCRIPTION_DETAILS: ['subscriptionDetails'],
+  SUBSCRIPTION_STATS: ['subscriptionStats'],
+  MY_TRANSACTIONS: ['myTransactions'],
+  TRANSACTION_STATS: ['transactionStats'],
   BUSINESS: ['business'],
   PAYMENT_STATUS: ['paymentStatus'],
+  LICENSE_DETAILS: ['licenseDetails'],
 };
