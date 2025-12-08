@@ -112,17 +112,23 @@ app_license = "MIT"
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
 
+# Fixtures
+
+fixtures = ["Print Format", "Custom Field", "Property Setter", "Client Script", "Server Script"]
+
 # Document Events
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"User": {
+		"after_insert": "pix_one.utils.user_hooks.sync_customer_on_user_save",
+		"on_update": "pix_one.utils.user_hooks.sync_customer_on_user_save"
+	},
+	"SaaS Subscription Plan": {
+		"on_submit": "pix_one.utils.subscription_hooks.create_item_on_subscription_plan_submit"
+	}
+}
 
 # Scheduled Tasks
 # ---------------

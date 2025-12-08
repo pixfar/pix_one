@@ -26,6 +26,7 @@ class BaseDataService:
                 order_by="modified desc"
             )
             user['roles'] = frappe.get_roles(user['name'])
+            user['customer'] = frappe.db.get_value("Customer", {"email_id": user['email']}, "*")
         return userInfo
 
     @staticmethod

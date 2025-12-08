@@ -47,24 +47,18 @@ def payment_cancel():
 
 		frappe.db.commit()
 
-		# Return cancelled response with redirect URL
-		return {
-			'status': 'cancelled',
-			'message': 'Payment was cancelled by user',
-			'transaction_id': tran_id,
-			'redirect_url': get_cancel_redirect_url(tran_id)
-		}
+		# Redirect to cancelled page
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = get_cancel_redirect_url(tran_id)
 
 	except Exception as e:
 		frappe.log_error(
 			f"Payment Cancel Handler Error: {str(e)}\n{frappe.get_traceback()}",
 			"Payment Cancel Handler"
 		)
-		return {
-			'status': 'error',
-			'message': str(e),
-			'redirect_url': get_cancel_redirect_url(payment_data.get('tran_id'))
-		}
+		# Redirect to cancelled page
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = get_cancel_redirect_url(payment_data.get('tran_id'))
 
 
 def create_cancelled_payment_transaction(tran_id, subscription_id, customer_id, amount,
@@ -114,4 +108,4 @@ def update_subscription_after_cancelled_payment(subscription_id):
 def get_cancel_redirect_url(tran_id):
 	"""Get redirect URL for cancelled payment"""
 	site_url = frappe.utils.get_url()
-	return f"{site_url}/pixone/payment/cancelled?transaction={tran_id}"
+	return f"{site_url}/dashboard/payments/cancelled?transaction={tran_id}"

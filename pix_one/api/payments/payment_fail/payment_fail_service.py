@@ -49,24 +49,18 @@ def payment_fail():
 
 		frappe.db.commit()
 
-		# Return failure response with redirect URL
-		return {
-			'status': 'failed',
-			'message': error or 'Payment failed',
-			'transaction_id': tran_id,
-			'redirect_url': get_failure_redirect_url(tran_id, error or 'Payment failed')
-		}
+		# Redirect to failure page
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = get_failure_redirect_url(tran_id, error or 'Payment failed')
 
 	except Exception as e:
 		frappe.log_error(
 			f"Payment Fail Handler Error: {str(e)}\n{frappe.get_traceback()}",
 			"Payment Fail Handler"
 		)
-		return {
-			'status': 'error',
-			'message': str(e),
-			'redirect_url': get_failure_redirect_url(payment_data.get('tran_id'), str(e))
-		}
+		# Redirect to failure page
+		frappe.local.response["type"] = "redirect"
+		frappe.local.response["location"] = get_failure_redirect_url(payment_data.get('tran_id'), str(e))
 
 
 def create_failed_payment_transaction(tran_id, subscription_id, customer_id, amount,
@@ -122,4 +116,4 @@ def get_failure_redirect_url(tran_id, reason):
 	site_url = frappe.utils.get_url()
 	import urllib.parse
 	encoded_reason = urllib.parse.quote(reason)
-	return f"{site_url}/pixone/payment/failed?transaction={tran_id}&reason={encoded_reason}"
+	return f"{site_url}/dashboard/payments/failed?transaction={tran_id}&reason={encoded_reason}"

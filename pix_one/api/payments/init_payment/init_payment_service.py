@@ -15,6 +15,7 @@ def initiate_payment(planId = None):
     try:
 
         user = BaseDataService.get_current_user()
+        
         if planId is None:
             frappe.throw(_("Plan ID is required to initiate payment."))
 
@@ -25,7 +26,6 @@ def initiate_payment(planId = None):
         )
         if not planDetails:
             frappe.throw(_("Invalid Plan ID provided."))
-        
         
 
         settings = get_sslcommerz_settings()
@@ -43,9 +43,11 @@ def initiate_payment(planId = None):
         customer_phone = contact.get('mobile_no') or contact.get('phone') or '01700000000'
 
         # Parse address if available (format: "address-type")
-        customer_address = contact.get('address', 'Dhaka')
-        if '-' in customer_address:
+        customer_address = contact.get('address') or 'Dhaka'
+        if customer_address and '-' in customer_address:
             customer_address = customer_address.split('-')[0].strip()
+        elif not customer_address:
+            customer_address = 'Dhaka'
 
         # Extract city from address or use default
         customer_city = 'Dhaka'
@@ -85,9 +87,12 @@ def initiate_payment(planId = None):
         response = sslcz.createSession(post_body)
         if not response:
             frappe.throw(_("Failed to connect to Payment gateway."))
+        
+        
 
-        create_saas_payment_transaction(tran_id, planId, customer_email, post_body, response)
-        create_payment_log(tran_id, customer_email, post_body, response)
+        # Create subscription and payment transaction
+        create_subscription_and_payment(tran_id, planId, customer_email, post_body, response)
+        
             
 
         # Check if session creation was successful
@@ -132,18 +137,78 @@ def generate_transaction_id():
     return f"TXN-{uuid.uuid4().hex[:12].upper()}"
 
 
-def create_saas_payment_transaction(tran_id, subscription_id, user_id, request_data, response_data):
-    """Create a SaaS Payment Transaction for subscription payments"""
+def create_subscription_and_payment(tran_id, plan_id, user_email, request_data, response_data):
+    """Create a SaaS Subscription and Payment Transaction for subscription payments"""
     try:
-        
+        # Get plan details
+        plan = frappe.get_doc('SaaS Subscription Plan', plan_id)
+
+        # Calculate dates
+        from frappe.utils import nowdate, add_days, add_months, add_years
+
+        start_date = nowdate()
+        trial_ends_on = None
+
+        # Check if trial is applicable
+        if plan.allow_trial and plan.trial_period_days:
+            trial_ends_on = add_days(start_date, plan.trial_period_days)
+
+        # Calculate end date based on billing interval
+        if plan.billing_interval == 'Monthly':
+            end_date = add_months(start_date, 1)
+        elif plan.billing_interval == 'Quarterly':
+            end_date = add_months(start_date, 3)
+        elif plan.billing_interval == 'Yearly':
+            end_date = add_years(start_date, 1)
+        elif plan.billing_interval == 'Lifetime':
+            end_date = add_years(start_date, 100)
+        else:
+            end_date = add_months(start_date, 1)
+
+        # Check if subscription already exists for this user and plan
+        existing_sub = frappe.db.get_value(
+            'SaaS Subscriptions',
+            {
+                'customer_id': user_email,
+                'plan_name': plan_id,
+                'status': ['in', ['Pending Payment', 'Draft']]
+            },
+            'name'
+        )
+
+        if existing_sub:
+            subscription_id = existing_sub
+        else:
+            # Create subscription in Pending Payment status
+            subscription = frappe.get_doc({
+                'doctype': 'SaaS Subscriptions',
+                'customer_id': user_email,
+                'plan_name': plan_id,
+                'app_name': 'Pix One',
+                'status': 'Pending Payment',
+                'start_date': start_date,
+                'end_date': end_date,
+                'trial_ends_on': trial_ends_on,
+                'billing_interval': plan.billing_interval,
+                'price': plan.price,
+                'setup_fee': plan.setup_fee,
+                'auto_renew': True,
+                'next_billing_date': end_date,
+                'created_by': user_email,
+                'creation_date': utils.now()
+            })
+            subscription.insert(ignore_permissions=True)
+            subscription_id = subscription.name
+
+        # Create payment transaction
         payment_transaction = frappe.get_doc({
             'doctype': 'SaaS Payment Transaction',
             'transaction_id': tran_id,
             'subscription_id': subscription_id,
-            'customer_id': user_id,
+            'customer_id': user_email,
             'amount': float(request_data.get('total_amount')),
             'currency': request_data.get('currency', 'BDT'),
-            'payment_date': utils.now(),
+            'payment_date': nowdate(),
             'payment_gateway': 'SSLCommerz',
             'status': 'Initiated',
             'transaction_type': request_data.get('value_d', 'Initial Payment'),
@@ -153,28 +218,32 @@ def create_saas_payment_transaction(tran_id, subscription_id, user_id, request_d
         })
         payment_transaction.insert(ignore_permissions=True)
         frappe.db.commit()
-    except Exception as e:
-        frappe.log_error(f"Failed to create SaaS payment transaction: {str(e)}", "SaaS Payment Transaction Creation")
 
+        return subscription_id
 
-def create_payment_log(tran_id, user_id, request_data, response_data):
-    """Create a payment log entry in SSL Payment doctype"""
-    try:
-        payment_log = frappe.get_doc({
-            'doctype': 'SSL Payment',
-            'transaction_id': tran_id,
-            'user': user_id,
-            'amount': request_data.get('total_amount'),
-            'currency': request_data.get('currency'),
-            'status': 'Initiated',
-            'customer_name': request_data.get('cus_name'),
-            'customer_email': request_data.get('cus_email'),
-            'customer_phone': request_data.get('cus_phone'),
-            'product_name': request_data.get('product_name'),
-            'request_data': json.dumps(request_data, indent=2),
-            'response_data': json.dumps(response_data, indent=2)
-        })
-        payment_log.insert(ignore_permissions=True)
-        frappe.db.commit()
     except Exception as e:
-        frappe.log_error(f"Failed to create payment log: {str(e)}", "Payment Log Creation")
+        frappe.log_error(
+            f"Failed to create subscription and payment: {str(e)}\n{frappe.get_traceback()}",
+            "Subscription & Payment Creation"
+        )
+        # Still create payment transaction even if subscription creation fails
+        try:
+            payment_transaction = frappe.get_doc({
+                'doctype': 'SaaS Payment Transaction',
+                'transaction_id': tran_id,
+                'customer_id': user_email,
+                'amount': float(request_data.get('total_amount')),
+                'currency': request_data.get('currency', 'BDT'),
+                'payment_date': nowdate(),
+                'payment_gateway': 'SSLCommerz',
+                'status': 'Initiated',
+                'transaction_type': request_data.get('value_d', 'Initial Payment'),
+                'gateway_response': json.dumps(response_data, indent=2),
+                'gateway_status': response_data.get('status'),
+                'is_recurring': False,
+                'notes': f"Plan: {plan_id}"
+            })
+            payment_transaction.insert(ignore_permissions=True)
+            frappe.db.commit()
+        except:
+            pass
