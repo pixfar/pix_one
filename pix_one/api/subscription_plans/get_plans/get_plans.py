@@ -38,7 +38,7 @@ def get_subscription_plans(page=1, limit=10, sort=None, order=None, search=None,
         sort=sort,
         order=order,
         search=search,
-        fields=[ 'name', 'plan_name', 'short_description', 'view_order', 'valid_days',  'price'],
+        fields=[ 'name', 'plan_name', 'short_description', 'sort_order', 'price'],
         filters=active_filters
     )
 

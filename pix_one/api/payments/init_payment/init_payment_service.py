@@ -7,7 +7,7 @@ import uuid
 from frappe import utils
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def initiate_payment(planId = None):
     """
     Initiate SSLCommerz payment session
@@ -124,6 +124,9 @@ def get_sslcommerz_settings():
     store_id = sslcommerz_settings.ssl_store_id
     store_pass = sslcommerz_settings.ssl_store_password
     is_sandbox = sslcommerz_settings.is_sandbox
+
+    if not store_id or not store_pass:
+        frappe.throw(_("SSLCommerz Store ID and Password must be configured in PixOne System Settings."))
     
     return {
         'store_id': store_id,
