@@ -1,0 +1,26 @@
+{
+ "allow_roles": [
+  {
+   "role": "All"
+  }
+ ],
+ "creation": "2025-12-18 17:10:19.168866",
+ "docstatus": 0,
+ "doctype": "Module Onboarding",
+ "documentation_url": "https://docs.erpnext.com/docs/user/manual/en/stock",
+ "idx": 0,
+ "is_complete": 0,
+ "modified": "2025-12-18 17:10:19.168866",
+ "modified_by": "Administrator",
+ "module": "Pix One",
+ "name": "Let's Set Up the PixOne Module.",
+ "owner": "Administrator",
+ "steps": [
+  {
+   "step": "Complete PixOne"
+  }
+ ],
+ "subtitle": "SaaS Subscription Plan, SaaS Subscription Features, Analysis, and more.",
+ "success_message": "The Stock Module is all set up!",
+ "title": "SaaS Subscription Plan, SaaS Subscription Features, Analysis, and more."
+}

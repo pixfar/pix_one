@@ -114,7 +114,7 @@ app_license = "MIT"
 
 # Fixtures
 
-fixtures = ["Print Format", "Custom Field", "Property Setter", "Client Script", "Server Script"]
+fixtures = ["Print Format", "Custom Field", "Property Setter", "Client Script", "Server Script", "Workspace" ]
 
 # Document Events
 # ---------------

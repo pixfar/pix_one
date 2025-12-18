@@ -1,0 +1,18 @@
+{
+ "action": "Create Entry",
+ "creation": "2025-12-18 17:08:49.596972",
+ "docstatus": 0,
+ "doctype": "Onboarding Step",
+ "idx": 0,
+ "is_complete": 0,
+ "is_single": 0,
+ "is_skipped": 0,
+ "modified": "2025-12-18 17:08:49.596972",
+ "modified_by": "Administrator",
+ "name": "Complete PixOne",
+ "owner": "Administrator",
+ "show_form_tour": 0,
+ "show_full_form": 0,
+ "title": "Complete PixOne",
+ "validate_action": 1
+}
