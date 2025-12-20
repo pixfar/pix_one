@@ -1,0 +1,330 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:COMP-.YYYY.-.#####",
+ "creation": "2025-12-20 00:00:00.000000",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "company_section",
+  "company_name",
+  "company_abbr",
+  "status",
+  "col_break1",
+  "site_name",
+  "site_url",
+  "site_status",
+  "subscription_section",
+  "subscription_id",
+  "customer_id",
+  "col_break2",
+  "created_by_user",
+  "erpnext_section",
+  "erpnext_company_id",
+  "is_erpnext_synced",
+  "col_break3",
+  "default_currency",
+  "country",
+  "domain",
+  "access_section",
+  "admin_password",
+  "admin_email",
+  "col_break4",
+  "database_section",
+  "db_name",
+  "db_host",
+  "db_port",
+  "col_break_db",
+  "is_dedicated_db",
+  "metadata_section",
+  "provisioning_started_at",
+  "provisioning_completed_at",
+  "col_break_meta",
+  "last_accessed_at",
+  "deletion_requested_at",
+  "notes_section",
+  "provisioning_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "COMP-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "COMP-.YYYY.-"
+  },
+  {
+   "fieldname": "company_section",
+   "fieldtype": "Section Break",
+   "label": "Company Information"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_abbr",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Abbreviation",
+   "length": 10
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nProvisioning\nActive\nSuspended\nDeleted\nFailed",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "site_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Site Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "site_url",
+   "fieldtype": "Data",
+   "label": "Site URL",
+   "read_only": 1
+  },
+  {
+   "default": "Not Created",
+   "fieldname": "site_status",
+   "fieldtype": "Select",
+   "label": "Site Status",
+   "options": "Not Created\nCreating\nActive\nMaintenance\nDeleted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "subscription_section",
+   "fieldtype": "Section Break",
+   "label": "Subscription & User"
+  },
+  {
+   "fieldname": "subscription_id",
+   "fieldtype": "Link",
+   "label": "Subscription",
+   "options": "SaaS Subscriptions"
+  },
+  {
+   "fieldname": "customer_id",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "created_by_user",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "erpnext_section",
+   "fieldtype": "Section Break",
+   "label": "ERPNext Integration"
+  },
+  {
+   "description": "The ERPNext Company doctype ID on the provisioned site",
+   "fieldname": "erpnext_company_id",
+   "fieldtype": "Data",
+   "label": "ERPNext Company ID",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_erpnext_synced",
+   "fieldtype": "Check",
+   "label": "Is ERPNext Synced",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "USD",
+   "fieldname": "default_currency",
+   "fieldtype": "Link",
+   "label": "Default Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "description": "Business domain/website (e.g., erp.acme.com)",
+   "fieldname": "domain",
+   "fieldtype": "Data",
+   "label": "Domain"
+  },
+  {
+   "fieldname": "access_section",
+   "fieldtype": "Section Break",
+   "label": "Site Access Credentials"
+  },
+  {
+   "fieldname": "admin_password",
+   "fieldtype": "Password",
+   "label": "Admin Password"
+  },
+  {
+   "fieldname": "admin_email",
+   "fieldtype": "Data",
+   "label": "Admin Email"
+  },
+  {
+   "fieldname": "col_break4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "database_section",
+   "fieldtype": "Section Break",
+   "label": "Database Information"
+  },
+  {
+   "fieldname": "db_name",
+   "fieldtype": "Data",
+   "label": "Database Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "db_host",
+   "fieldtype": "Data",
+   "label": "Database Host",
+   "read_only": 1
+  },
+  {
+   "fieldname": "db_port",
+   "fieldtype": "Data",
+   "label": "Database Port",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_db",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "If enabled, this company uses a dedicated database server",
+   "fieldname": "is_dedicated_db",
+   "fieldtype": "Check",
+   "label": "Is Dedicated Database"
+  },
+  {
+   "fieldname": "metadata_section",
+   "fieldtype": "Section Break",
+   "label": "Metadata"
+  },
+  {
+   "fieldname": "provisioning_started_at",
+   "fieldtype": "Datetime",
+   "label": "Provisioning Started At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "provisioning_completed_at",
+   "fieldtype": "Datetime",
+   "label": "Provisioning Completed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_break_meta",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_accessed_at",
+   "fieldtype": "Datetime",
+   "label": "Last Accessed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deletion_requested_at",
+   "fieldtype": "Datetime",
+   "label": "Deletion Requested At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "provisioning_notes",
+   "fieldtype": "Text",
+   "label": "Provisioning Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "SaaS Company",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-20 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Pix One",
+ "name": "SaaS Company",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "if_owner": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Subscriber",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

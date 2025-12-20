@@ -127,6 +127,16 @@ doc_events = {
 	},
 	"SaaS Subscription Plan": {
 		"on_submit": "pix_one.utils.subscription_hooks.create_item_on_subscription_plan_submit"
+	},
+	"SaaS Company": {
+		"after_insert": "pix_one.utils.company_hooks.update_subscription_on_company_change",
+		"on_trash": "pix_one.utils.company_hooks.update_subscription_on_company_change"
+	},
+	"SaaS Subscriptions": {
+		"on_update": [
+			"pix_one.utils.company_hooks.validate_company_on_subscription_change",
+			"pix_one.utils.company_hooks.auto_activate_companies_on_subscription_renewal"
+		]
 	}
 }
 

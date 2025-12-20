@@ -7,13 +7,29 @@
   "doctype_or_field": "DocField",
   "field_name": "app_name",
   "is_system_generated": 0,
-  "modified": "2025-11-30 22:31:24.644387",
+  "modified": "2025-12-20 12:05:25.452518",
   "module": null,
   "name": "SaaS Subscription Plan-app_name-in_list_view",
   "property": "in_list_view",
   "property_type": "Check",
   "row_name": null,
   "value": "0"
+ },
+ {
+  "default_value": null,
+  "doc_type": "SaaS Subscription Plan",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2025-12-20 12:05:25.472417",
+  "module": null,
+  "name": "SaaS Subscription Plan-main-field_order",
+  "property": "field_order",
+  "property_type": "Data",
+  "row_name": null,
+  "value": "[\"plan_name\", \"custom_max_allow_sites\", \"custom_column_break_tffa7\", \"plan_code\", \"section_break_ggrb\", \"short_description\", \"section_break_status\", \"custom_column_break_4mooj\", \"is_active\", \"column_break_status\", \"custom_allow_external_db\", \"custom_column_break_nuwh1\", \"sort_order\", \"section_break_pricing\", \"price\", \"currency\", \"column_break_pricing\", \"setup_fee\", \"billing_interval\", \"section_break_limits\", \"max_users\", \"max_storage_mb\", \"column_break_limits\", \"max_companies\", \"api_calls_per_hour\", \"section_break_trial\", \"allow_trial\", \"column_break_trial\", \"trial_period_days\", \"section_break_ytxe\", \"features\", \"amended_from\"]"
  },
  {
   "default_value": null,
@@ -1630,21 +1646,5 @@
   "property_type": "Check",
   "row_name": null,
   "value": "1"
- },
- {
-  "default_value": null,
-  "doc_type": "SaaS Subscription Plan",
-  "docstatus": 0,
-  "doctype": "Property Setter",
-  "doctype_or_field": "DocType",
-  "field_name": null,
-  "is_system_generated": 0,
-  "modified": "2025-12-17 17:38:51.045088",
-  "module": null,
-  "name": "SaaS Subscription Plan-main-field_order",
-  "property": "field_order",
-  "property_type": "Data",
-  "row_name": null,
-  "value": "[\"plan_name\", \"custom_max_allow_sites\", \"custom_column_break_tffa7\", \"plan_code\", \"section_break_ggrb\", \"short_description\", \"section_break_status\", \"custom_column_break_4mooj\", \"is_active\", \"column_break_status\", \"custom_allow_external_db\", \"custom_column_break_nuwh1\", \"sort_order\", \"section_break_pricing\", \"price\", \"currency\", \"column_break_pricing\", \"setup_fee\", \"billing_interval\", \"section_break_limits\", \"max_users\", \"max_storage_mb\", \"column_break_limits\", \"max_companies\", \"api_calls_per_hour\", \"section_break_trial\", \"allow_trial\", \"column_break_trial\", \"trial_period_days\", \"section_break_ytxe\", \"features\", \"amended_from\"]"
  }
 ]
