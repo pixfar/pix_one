@@ -16,8 +16,8 @@ class SaaSCompany(Document):
 			self.customer_id = frappe.session.user
 
 		# Generate site name from company name if not provided
-		if not self.site_name:
-			self.site_name = self._generate_site_name()
+		# if not self.site_name:
+		# 	self.site_name = self._generate_site_name()
 
 		# Set site URL
 		if not self.site_url:
@@ -75,17 +75,18 @@ class SaaSCompany(Document):
 
 	def validate_site_name(self):
 		"""Validate site name format"""
-		import re
-		if self.site_name:
-			# Site name should be lowercase alphanumeric with hyphens
-			if not re.match(r'^[a-z0-9-]+$', self.site_name):
-				frappe.throw("Site name can only contain lowercase letters, numbers, and hyphens")
+		pass
+		# import re
+		# if self.site_name:
+		# 	# Site name should be lowercase alphanumeric with hyphens
+		# 	if not re.match(r'^[a-z0-9-]+$', self.site_name):
+		# 		frappe.throw("Site name can only contain lowercase letters, numbers, and hyphens")
 
-			if len(self.site_name) < 3:
-				frappe.throw("Site name must be at least 3 characters long")
+		# 	if len(self.site_name) < 3:
+		# 		frappe.throw("Site name must be at least 3 characters long")
 
-			if len(self.site_name) > 63:
-				frappe.throw("Site name must be less than 63 characters")
+		# 	if len(self.site_name) > 63:
+		# 		frappe.throw("Site name must be less than 63 characters")
 
 	def validate_subscription_quota(self):
 		"""Check if user has reached max companies in their subscription plan"""

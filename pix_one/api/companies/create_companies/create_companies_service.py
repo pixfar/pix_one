@@ -20,7 +20,7 @@ from pix_one.common.interceptors.response_interceptors import ResponseFormatter,
 
 
 # Configuration
-BENCH_PATH = os.getenv("BENCH_PATH", "/workspace/development/saas-bench")
+BENCH_PATH = os.getenv("BENCH_PATH", "/workspace/development/frappe-bench")
 
 
 # ==================== UTILITY FUNCTIONS ====================
@@ -185,59 +185,6 @@ def _install_apps_on_site(site_name: str, apps_to_install: list) -> Tuple[bool, 
     return True, f"Installed apps: {', '.join(installed_apps)}"
 
 
-def _create_erpnext_company(
-    site_name: str,
-    company_name: str,
-    company_abbr: str,
-    default_currency: str = "USD",
-    country: str = "United States"
-) -> Tuple[bool, str, Optional[str]]:
-    """
-    Create an ERPNext Company on the provisioned site.
-
-    Args:
-        site_name: Name of the site
-        company_name: Company name
-        company_abbr: Company abbreviation
-        default_currency: Default currency code
-        country: Country name
-
-    Returns:
-        Tuple of (success, message, company_id)
-    """
-    try:
-        # Create company via bench console
-        script = f"""
-import frappe
-frappe.init(site='{site_name}')
-frappe.connect()
-
-company_doc = frappe.get_doc({{
-    "doctype": "Company",
-    "company_name": "{company_name}",
-    "abbr": "{company_abbr}",
-    "default_currency": "{default_currency}",
-    "country": "{country}"
-}})
-company_doc.insert(ignore_permissions=True)
-frappe.db.commit()
-
-print(company_doc.name)
-"""
-
-        cmd = f"cd {shlex.quote(BENCH_PATH)} && echo {shlex.quote(script)} | bench --site {site_name} console"
-        code, out, err = _run(cmd)
-
-        if code == 0 and out.strip():
-            company_id = out.strip().split('\n')[-1]  # Get last line (company name)
-            return True, "ERPNext company created successfully", company_id
-        else:
-            return False, f"Failed to create ERPNext company: {err or out}", None
-
-    except Exception as e:
-        return False, f"Error creating ERPNext company: {str(e)}", None
-
-
 # ==================== VALIDATION FUNCTIONS ====================
 
 def _validate_subscription(user_id: str, subscription_id: Optional[str] = None) -> Tuple[bool, str, Optional[str]]:
@@ -341,7 +288,7 @@ def create_company(
     default_currency: str = "USD",
     country: str = "United States",
     domain: Optional[str] = None,
-    apps_to_install: Optional[list] = None,
+    apps_to_install: Optional[list] = ["erpnext"],
     subscription_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """
@@ -426,6 +373,7 @@ def create_company(
             "doctype": "SaaS Company",
             "company_name": company_name,
             "company_abbr": company_abbr,
+            "site_name": domain.lower(),
             "customer_id": current_user,
             "subscription_id": subscription_id,
             "admin_password": admin_password,
@@ -446,84 +394,43 @@ def create_company(
             "COMPANY_CREATE_FAILED"
         )
 
-    # Start provisioning
-    site_name = company_doc.site_name
+    # Start provisioning in background
+    site_name = domain.lower()
 
     try:
-        # Update status to Provisioning
-        company_doc.db_set("status", "Provisioning", update_modified=False)
-        company_doc.db_set("provisioning_started_at", now_datetime(), update_modified=False)
-        company_doc.db_set("site_status", "Creating", update_modified=False)
+        # Update status to Queued
+        company_doc.db_set("status", "Queued", update_modified=False)
+        company_doc.db_set("site_status", "Queued", update_modified=False)
         frappe.db.commit()
 
-        # Get DB config
-        db_config = _get_db_config()
-
-        # Provision Frappe site
-        success, message, output = _provision_frappe_site(
-            site_name,
-            admin_password,
-            db_config,
-            overwrite=True
+        # Enqueue background job for site provisioning
+        frappe.enqueue(
+            "pix_one.api.companies.create_companies.provisioning_jobs.provision_company_site",
+            queue="long",  # Use long queue for time-consuming tasks
+            timeout=600,  # 10 minutes timeout
+            company_id=company_doc.name,
+            site_name=site_name,
+            admin_password=admin_password,
+            admin_email=admin_email,
+            customer_email=current_user,  # Send email to the customer who created the company
+            apps_to_install=apps_to_install,
+            is_async=True,
+            now=False
         )
 
-        if not success:
-            raise Exception(f"Site provisioning failed: {message}")
+        frappe.logger().info(f"Provisioning job enqueued for company {company_doc.name}")
 
-        company_doc.db_set("site_status", "Active", update_modified=False)
-        company_doc.db_set("db_name", f"_{site_name}", update_modified=False)
-        company_doc.db_set("db_host", db_config["db_host"], update_modified=False)
-        company_doc.db_set("db_port", db_config["db_port"], update_modified=False)
-
-        provisioning_notes = [f"Site created: {message}"]
-
-        # Install apps
-        if apps_to_install:
-            app_success, app_message = _install_apps_on_site(site_name, apps_to_install)
-            provisioning_notes.append(f"Apps: {app_message}")
-
-            if not app_success:
-                frappe.logger().warning(f"App installation issues: {app_message}")
-
-        # Create ERPNext company if erpnext is installed
-        if "erpnext" in apps_to_install:
-            erp_success, erp_message, erp_company_id = _create_erpnext_company(
-                site_name,
-                company_name,
-                company_abbr,
-                default_currency,
-                country
-            )
-
-            if erp_success and erp_company_id:
-                company_doc.db_set("erpnext_company_id", erp_company_id, update_modified=False)
-                company_doc.db_set("is_erpnext_synced", 1, update_modified=False)
-                provisioning_notes.append(f"ERPNext company created: {erp_company_id}")
-            else:
-                provisioning_notes.append(f"ERPNext company creation failed: {erp_message}")
-
-        # Update completion status
-        company_doc.db_set("status", "Active", update_modified=False)
-        company_doc.db_set("provisioning_completed_at", now_datetime(), update_modified=False)
-        company_doc.db_set("provisioning_notes", "\n".join(provisioning_notes), update_modified=False)
-        frappe.db.commit()
-
-        # Reload document to get fresh data
-        company_doc.reload()
-
+        # Return immediate response
         return ResponseFormatter.created(
             {
                 "company_id": company_doc.name,
                 "company_name": company_doc.company_name,
-                "site_name": company_doc.site_name,
+                "site_name": site_name,
                 "site_url": company_doc.site_url,
-                "admin_email": company_doc.admin_email,
-                "admin_password": admin_password,  # Return password only on creation
-                "status": company_doc.status,
-                "erpnext_company_id": company_doc.erpnext_company_id,
-                "provisioning_notes": company_doc.provisioning_notes
+                "status": "Queued",
+                "message": "Company record created. Site provisioning has been queued and will be processed shortly. You will receive an email with login credentials once provisioning is complete."
             },
-            f"Company '{company_name}' created successfully with site '{site_name}'"
+            f"Company '{company_name}' created. Provisioning in progress..."
         )
 
     except Exception as e:
@@ -537,6 +444,46 @@ def create_company(
 
         frappe.log_error(f"Company creation failed: {str(e)}", "Company Creation Error")
         return ResponseFormatter.server_error(f"Company creation failed: {str(e)}")
+
+
+@frappe.whitelist()
+@handle_exceptions
+def get_company_status(company_id: str) -> Dict[str, Any]:
+    """
+    Get the provisioning status of a company.
+
+    Args:
+        company_id: ID of the company
+
+    Returns:
+        Dictionary with company status details
+    """
+    try:
+        company_doc = frappe.get_doc("SaaS Company", company_id)
+
+        # Check permissions
+        if frappe.session.user != company_doc.customer_id and not frappe.has_permission("SaaS Company", "read"):
+            return ResponseFormatter.forbidden("You don't have permission to view this company")
+
+        return ResponseFormatter.success(
+            {
+                "company_id": company_doc.name,
+                "company_name": company_doc.company_name,
+                "status": company_doc.status,
+                "site_status": company_doc.site_status,
+                "site_name": company_doc.site_name,
+                "site_url": company_doc.site_url,
+                "provisioning_started_at": company_doc.provisioning_started_at,
+                "provisioning_completed_at": company_doc.provisioning_completed_at,
+                "provisioning_notes": company_doc.provisioning_notes
+            },
+            f"Status: {company_doc.status}"
+        )
+
+    except frappe.DoesNotExistError:
+        return ResponseFormatter.not_found(f"Company {company_id} not found")
+    except Exception as e:
+        return ResponseFormatter.server_error(f"Failed to get status: {str(e)}")
 
 
 @frappe.whitelist()
