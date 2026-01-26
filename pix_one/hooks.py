@@ -1,3 +1,5 @@
+
+# app information
 app_name = "pix_one"
 app_title = "Pix One"
 app_publisher = "Pixfar"
@@ -163,9 +165,11 @@ scheduler_events = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "pix_one.event.get_events"
-# }
+override_whitelisted_methods = {
+    "frappe.core.doctype.user.user.sign_up": "pix_one.overrides.user.sign_up",
+    # Note: frappe.twofactor.send_token_via_email is NOT a whitelisted method,
+    # so it's overridden via monkey-patching in pix_one/__init__.py instead
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
@@ -220,9 +224,10 @@ scheduler_events = {
 # Authentication and authorization
 # --------------------------------
 
-# auth_hooks = [
-# 	"pix_one.auth.validate"
-# ]
+auth_hooks = [
+	"pix_one.auth.validate"
+]
+
 website_route_rules = [
     {'from_route': '/pixone/<path:app_path>', 'to_route': 'dashboard'},
     {'from_route': '/pixone', 'to_route': 'dashboard'},

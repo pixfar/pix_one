@@ -5,6 +5,19 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "auth_tab",
+  "jwt_section",
+  "access_token_expiry",
+  "column_break_uzsk",
+  "refresh_token_expiry",
+  "role_section",
+  "user_default_role",
+  "mail_templates_section",
+  "registration_template",
+  "column_break_ulol",
+  "forgot_password_template",
+  "column_break_2fa",
+  "two_factor_auth_template",
   "ssl_commerz_tab",
   "ssl_commerz_section",
   "ssl_store_id",
@@ -47,13 +60,79 @@
   {
    "fieldname": "section_break_gaqr",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "auth_tab",
+   "fieldtype": "Tab Break",
+   "label": "Auth"
+  },
+  {
+   "fieldname": "jwt_section",
+   "fieldtype": "Section Break",
+   "label": "JWT"
+  },
+  {
+   "fieldname": "access_token_expiry",
+   "fieldtype": "Data",
+   "label": "Access Token Expiry"
+  },
+  {
+   "fieldname": "column_break_uzsk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "refresh_token_expiry",
+   "fieldtype": "Data",
+   "label": "Refresh Token Expiry"
+  },
+  {
+   "fieldname": "role_section",
+   "fieldtype": "Section Break",
+   "label": "Role"
+  },
+  {
+   "fieldname": "user_default_role",
+   "fieldtype": "Link",
+   "label": "User Default Role",
+   "options": "Role"
+  },
+  {
+   "fieldname": "mail_templates_section",
+   "fieldtype": "Section Break",
+   "label": "Mail Templates"
+  },
+  {
+   "fieldname": "registration_template",
+   "fieldtype": "Link",
+   "label": "Registration Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_ulol",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "forgot_password_template",
+   "fieldtype": "Link",
+   "label": "Forgot Password Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_2fa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "two_factor_auth_template",
+   "fieldtype": "Link",
+   "label": "Two Factor Auth Template",
+   "options": "Email Template"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-11-19 22:53:40.743387",
+ "modified": "2026-01-26 22:25:35.858119",
  "modified_by": "Administrator",
  "module": "Pix One",
  "name": "PixOne System Settings",

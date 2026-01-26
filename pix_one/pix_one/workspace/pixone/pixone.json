@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"aCk49ShVRs\",\"type\":\"onboarding\",\"data\":{\"onboarding_name\":\"Let's Set Up the PixOne Module.\",\"col\":12}},{\"id\":\"kb3XPLg8lb\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"snrzfbFr5Y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Subscription Plan\",\"col\":3}},{\"id\":\"nWd2KJPW8l\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Subscriptions\",\"col\":3}},{\"id\":\"SHJKakmLLf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS App Validation\",\"col\":3}},{\"id\":\"CPxEyhaf3G\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Payment Transaction\",\"col\":3}},{\"id\":\"d_KVM1gsf9\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
- "creation": "2025-12-18 17:04:30.570460",
+ "content": "[{\"id\":\"aCk49ShVRs\",\"type\":\"onboarding\",\"data\":{\"onboarding_name\":\"Let's Set Up the PixOne Module.\",\"col\":12}},{\"id\":\"RTjqjpCa8S\",\"type\":\"paragraph\",\"data\":{\"text\":\"<span class=\\\"h3\\\">System Settings</span>\",\"col\":12}},{\"id\":\"1Rfr6qOYM9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pixone System Settings\",\"col\":3}},{\"id\":\"h_ygsh5caW\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"kb3XPLg8lb\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"snrzfbFr5Y\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Subscription Plan\",\"col\":3}},{\"id\":\"nWd2KJPW8l\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Subscriptions\",\"col\":3}},{\"id\":\"SHJKakmLLf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS App Validation\",\"col\":3}},{\"id\":\"CPxEyhaf3G\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Payment Transaction\",\"col\":3}},{\"id\":\"d_KVM1gsf9\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "creation": "2025-12-22 20:00:59.735552",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -201,12 +201,12 @@
    "type": "Link"
   }
  ],
- "modified": "2025-12-18 17:17:45.824553",
+ "modified": "2026-01-26 22:13:01.170203",
  "modified_by": "Administrator",
  "module": "Pix One",
  "name": "PixOne",
  "number_cards": [],
- "owner": "azmin@excelbd.com",
+ "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
@@ -219,6 +219,13 @@
    "label": "SaaS Subscription Plan",
    "link_to": "SaaS Subscription Plan",
    "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Pixone System Settings",
+   "link_to": "PixOne System Settings",
    "type": "DocType"
   },
   {
