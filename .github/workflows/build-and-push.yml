@@ -95,10 +95,6 @@ jobs:
                "branch": "develop"
             },
             {
-               "url": "https://github.com/frappe/biometric-attendance-sync-tool.git",
-               "branch": "master"
-            },
-            {
                "url": "https://github.com/earthians/marley.git",
                "branch": "version-14"
             }
