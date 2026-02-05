@@ -30,8 +30,79 @@ jobs:
       - name: Build and Push Frappe Docker Image
         run: |
           export APPS_JSON='[
-            {"url": "https://github.com/frappe/erpnext", "branch": "version-15"},
-            {"url": "https://github.com/pixfar/pix_one.git", "branch": "master"}
+            {
+            "url": "https://github.com/frappe/erpnext",
+            "branch": "version-15"
+            },
+            {
+            "url": "https://github.com/frappe/hrms.git",
+            "branch": "version-15"
+            },
+            {
+               "url": "https://gitlab.com/excel.azmin/whitelabel.git",
+               "branch": "main"
+            },
+            {
+               "url": "https://gitlab.com/arcapps/frappe_survey.git",
+               "branch": "master"
+            },
+            {
+               "url": "https://github.com/frappe/education.git",
+               "branch": "develop"
+            },
+            {
+               "url": "https://github.com/frappe/lms.git",
+               "branch": "v2.15.0"
+            },
+            {
+               "url": "https://github.com/frappe/hospitality.git",
+               "branch": "develop"
+            },
+            {
+               "url": "https://gitlab.com/arcapps/excel_meeting_booking.git",
+               "branch": "master"
+            },
+            {
+               "url": "https://gitlab.com/arcapps/excel_restaurant_pos.git",
+               "branch": "master"
+            },
+            {
+               "url": "https://github.com/frappe/helpdesk.git",
+               "branch": "version-14"
+            },
+            {
+               "url": "https://gitlab.com/arcapps/excel-helpdesk.git",
+               "branch": "master"
+            },
+            {
+               "url": "https://gitlab.com/arcapps/excel_qr_code.git",
+               "branch": "master"
+            },
+            {
+               "url": "https://gitlab.com/arcapps/excel_erpnext.git",
+               "branch": "version-14"
+            },
+            {
+               "url": "https://github.com/frappe/insights.git",
+               "branch": "develop"
+            },
+            {
+               "url": "https://github.com/frappe/print_designer.git",
+               "branch": "develop"
+            },
+            {
+               "url": "https://github.com/frappe/agriculture.git",
+               "branch": "develop"
+            },
+            {
+               "url": "https://github.com/frappe/biometric-attendance-sync-tool.git",
+               "branch": "master"
+            },
+            {
+               "url": "https://github.com/earthians/marley.git",
+               "branch": "version-14"
+            }
+
           ]
           '
 
@@ -45,6 +116,6 @@ jobs:
           --build-arg PYTHON_VERSION=3.11.9 \
           --build-arg NODE_VERSION=20.19.2  \
           --build-arg APPS_JSON_BASE64="$APPS_JSON_BASE64" \
-          --tag pixfar/pixone-erp:latest \
+          --tag pixfar/allio-erp:latest \
           --file images/custom/Containerfile \
           --push .
