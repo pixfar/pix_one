@@ -55,6 +55,10 @@ jobs:
                "branch": "v2.15.0"
             },
             {
+               "url": "https://github.com/frappe/crm.git",
+               "branch": "v1.58.5"
+            },
+            {
                "url": "https://github.com/frappe/hospitality.git",
                "branch": "develop"
             },
