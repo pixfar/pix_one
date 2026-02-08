@@ -43,6 +43,10 @@ jobs:
                "branch": "main"
             },
             {
+              "url": "https://github.com/pixfar/pix_one.git",
+              "branch": "master"
+            },
+            {
                "url": "https://gitlab.com/arcapps/frappe_survey.git",
                "branch": "master"
             },
