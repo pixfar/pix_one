@@ -1,0 +1,122 @@
+{
+  "actions": [],
+  "autoname": "hash",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "alert_type",
+    "severity",
+    "column_break_basic",
+    "is_active",
+    "condition",
+    "section_break_message",
+    "message",
+    "section_break_trigger",
+    "last_triggered",
+    "trigger_count",
+    "column_break_ack",
+    "acknowledged_by",
+    "acknowledged_at"
+  ],
+  "fields": [
+    {
+      "fieldname": "alert_type",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Alert Type",
+      "reqd": 1
+    },
+    {
+      "default": "warning",
+      "fieldname": "severity",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Severity",
+      "options": "info\nwarning\ncritical"
+    },
+    {
+      "fieldname": "column_break_basic",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "1",
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Active"
+    },
+    {
+      "fieldname": "condition",
+      "fieldtype": "Data",
+      "label": "Condition"
+    },
+    {
+      "fieldname": "section_break_message",
+      "fieldtype": "Section Break",
+      "label": "Message"
+    },
+    {
+      "fieldname": "message",
+      "fieldtype": "Text",
+      "label": "Message"
+    },
+    {
+      "fieldname": "section_break_trigger",
+      "fieldtype": "Section Break",
+      "label": "Trigger & Acknowledgement"
+    },
+    {
+      "fieldname": "last_triggered",
+      "fieldtype": "Datetime",
+      "label": "Last Triggered",
+      "read_only": 1
+    },
+    {
+      "default": "0",
+      "fieldname": "trigger_count",
+      "fieldtype": "Int",
+      "label": "Trigger Count",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_ack",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "acknowledged_by",
+      "fieldtype": "Link",
+      "label": "Acknowledged By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "acknowledged_at",
+      "fieldtype": "Datetime",
+      "label": "Acknowledged At",
+      "read_only": 1
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Alert Rule",
+  "naming_rule": "Random",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
+}

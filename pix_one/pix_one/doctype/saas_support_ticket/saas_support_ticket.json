@@ -1,0 +1,100 @@
+{
+  "actions": [],
+  "autoname": "TICKET-.YYYY.-.#####",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "subject",
+    "description",
+    "status",
+    "priority",
+    "category",
+    "raised_by",
+    "assigned_to",
+    "resolution",
+    "closed_at",
+    "replies"
+  ],
+  "fields": [
+    {
+      "fieldname": "subject",
+      "fieldtype": "Data",
+      "label": "Subject"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text Editor",
+      "label": "Description"
+    },
+    {
+      "default": "Open",
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Open\nReplied\nReopened\nIn Progress\nClosed"
+    },
+    {
+      "default": "Medium",
+      "fieldname": "priority",
+      "fieldtype": "Select",
+      "label": "Priority",
+      "options": "Low\nMedium\nHigh\nCritical"
+    },
+    {
+      "fieldname": "category",
+      "fieldtype": "Data",
+      "label": "Category"
+    },
+    {
+      "fieldname": "raised_by",
+      "fieldtype": "Link",
+      "label": "Raised By",
+      "options": "User"
+    },
+    {
+      "fieldname": "assigned_to",
+      "fieldtype": "Link",
+      "label": "Assigned To",
+      "options": "User"
+    },
+    {
+      "fieldname": "resolution",
+      "fieldtype": "Text",
+      "label": "Resolution"
+    },
+    {
+      "fieldname": "closed_at",
+      "fieldtype": "Datetime",
+      "label": "Closed At"
+    },
+    {
+      "fieldname": "replies",
+      "fieldtype": "Table",
+      "label": "Replies",
+      "options": "SaaS Support Reply"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Support Ticket",
+  "naming_rule": "Expression (old style)",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
+}

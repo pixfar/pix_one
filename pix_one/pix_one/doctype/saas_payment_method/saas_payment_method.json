@@ -1,0 +1,84 @@
+{
+  "actions": [],
+  "autoname": "hash",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "user",
+    "method_type",
+    "column_break_basic",
+    "label",
+    "is_default",
+    "section_break_token",
+    "gateway_token"
+  ],
+  "fields": [
+    {
+      "fieldname": "user",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "User",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "default": "Card",
+      "fieldname": "method_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Method Type",
+      "options": "Card\nBank Transfer\nMobile Banking\nbKash\nNagad\nPayPal",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_basic",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "label",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Label"
+    },
+    {
+      "default": "0",
+      "fieldname": "is_default",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Default"
+    },
+    {
+      "fieldname": "section_break_token",
+      "fieldtype": "Section Break",
+      "label": "Gateway Token"
+    },
+    {
+      "fieldname": "gateway_token",
+      "fieldtype": "Password",
+      "label": "Gateway Token"
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Payment Method",
+  "naming_rule": "Random",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 0
+}

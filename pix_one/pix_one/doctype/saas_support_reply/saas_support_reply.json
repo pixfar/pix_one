@@ -1,0 +1,48 @@
+{
+  "actions": [],
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "reply_by",
+    "reply_text",
+    "is_staff_reply"
+  ],
+  "fields": [
+    {
+      "fieldname": "reply_by",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Reply By",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "reply_text",
+      "fieldtype": "Text Editor",
+      "in_list_view": 1,
+      "label": "Reply Text",
+      "reqd": 1
+    },
+    {
+      "default": "0",
+      "fieldname": "is_staff_reply",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Staff Reply"
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 1,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Support Reply",
+  "owner": "Administrator",
+  "permissions": [],
+  "sort_field": "creation",
+  "sort_order": "ASC",
+  "states": [],
+  "track_changes": 0
+}

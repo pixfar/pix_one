@@ -1,0 +1,101 @@
+{
+  "actions": [],
+  "autoname": "field:title",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "title",
+    "category",
+    "section_break_content",
+    "summary",
+    "content",
+    "section_break_meta",
+    "tags",
+    "column_break_meta",
+    "is_published",
+    "view_count"
+  ],
+  "fields": [
+    {
+      "fieldname": "title",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Title",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "category",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Category"
+    },
+    {
+      "fieldname": "section_break_content",
+      "fieldtype": "Section Break",
+      "label": "Content"
+    },
+    {
+      "fieldname": "summary",
+      "fieldtype": "Small Text",
+      "label": "Summary"
+    },
+    {
+      "fieldname": "content",
+      "fieldtype": "Text Editor",
+      "label": "Content",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_meta",
+      "fieldtype": "Section Break",
+      "label": "Metadata"
+    },
+    {
+      "fieldname": "tags",
+      "fieldtype": "Data",
+      "label": "Tags"
+    },
+    {
+      "fieldname": "column_break_meta",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "0",
+      "fieldname": "is_published",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Published"
+    },
+    {
+      "default": "0",
+      "fieldname": "view_count",
+      "fieldtype": "Int",
+      "label": "View Count",
+      "read_only": 1
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS KB Article",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
+}

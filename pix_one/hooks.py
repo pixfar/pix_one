@@ -150,10 +150,17 @@ scheduler_events = {
 		"pix_one.tasks.subscription_scheduler.check_expired_subscriptions",
 		"pix_one.tasks.subscription_scheduler.check_trial_expiry",
 		"pix_one.tasks.subscription_scheduler.send_renewal_reminders",
-		"pix_one.tasks.subscription_scheduler.process_auto_renewals"
+		"pix_one.tasks.subscription_scheduler.process_auto_renewals",
+		"pix_one.tasks.monitoring_jobs.take_usage_snapshots",
+		"pix_one.tasks.monitoring_jobs.process_scheduled_downgrades",
+		"pix_one.tasks.monitoring_jobs.cleanup_expired_invites",
 	],
 	"hourly": [
-		"pix_one.tasks.subscription_scheduler.update_license_validation_status"
+		"pix_one.tasks.subscription_scheduler.update_license_validation_status",
+		"pix_one.tasks.monitoring_jobs.check_platform_health",
+	],
+	"weekly": [
+		"pix_one.utils.jwt_auth.cleanup_expired_blacklist",
 	]
 }
 

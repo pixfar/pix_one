@@ -29,7 +29,7 @@ def validate():
 
     try:
         # Import here to avoid circular imports
-        from excel_restaurant_pos.utils.jwt_auth import verify_token
+        from pix_one.utils.jwt_auth import verify_token
 
         # Verify token and get user
         payload = verify_token(token, token_type="access")

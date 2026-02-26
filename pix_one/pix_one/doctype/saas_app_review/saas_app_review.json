@@ -1,0 +1,64 @@
+{
+  "actions": [],
+  "autoname": "hash",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "app_name",
+    "user",
+    "rating",
+    "review_text"
+  ],
+  "fields": [
+    {
+      "fieldname": "app_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "App Name",
+      "reqd": 1
+    },
+    {
+      "fieldname": "user",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "User",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "rating",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "Rating",
+      "reqd": 1
+    },
+    {
+      "fieldname": "review_text",
+      "fieldtype": "Text",
+      "label": "Review Text"
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS App Review",
+  "naming_rule": "Random",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 0
+}

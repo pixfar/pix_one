@@ -1,0 +1,70 @@
+{
+  "actions": [],
+  "autoname": "AUDIT-.YYYY.-.#####",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "action",
+    "user",
+    "reference_doctype",
+    "reference_name",
+    "data",
+    "ip_address"
+  ],
+  "fields": [
+    {
+      "fieldname": "action",
+      "fieldtype": "Data",
+      "label": "Action"
+    },
+    {
+      "fieldname": "user",
+      "fieldtype": "Link",
+      "label": "User",
+      "options": "User"
+    },
+    {
+      "fieldname": "reference_doctype",
+      "fieldtype": "Data",
+      "label": "Reference DocType"
+    },
+    {
+      "fieldname": "reference_name",
+      "fieldtype": "Data",
+      "label": "Reference Name"
+    },
+    {
+      "fieldname": "data",
+      "fieldtype": "Long Text",
+      "label": "Data"
+    },
+    {
+      "fieldname": "ip_address",
+      "fieldtype": "Data",
+      "label": "IP Address"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Audit Log",
+  "naming_rule": "Expression (old style)",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
+}

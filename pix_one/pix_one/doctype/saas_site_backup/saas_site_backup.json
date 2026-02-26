@@ -1,0 +1,85 @@
+{
+  "actions": [],
+  "autoname": "hash",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "company_id",
+    "backup_type",
+    "column_break_basic",
+    "status",
+    "section_break_file",
+    "file_url",
+    "file_size_mb"
+  ],
+  "fields": [
+    {
+      "fieldname": "company_id",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Company",
+      "options": "SaaS Company",
+      "reqd": 1
+    },
+    {
+      "default": "Full",
+      "fieldname": "backup_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Backup Type",
+      "options": "Full\nDatabase Only\nFiles Only"
+    },
+    {
+      "fieldname": "column_break_basic",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "Pending",
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Pending\nIn Progress\nCompleted\nFailed"
+    },
+    {
+      "fieldname": "section_break_file",
+      "fieldtype": "Section Break",
+      "label": "Backup File"
+    },
+    {
+      "fieldname": "file_url",
+      "fieldtype": "Data",
+      "label": "File URL"
+    },
+    {
+      "default": "0",
+      "fieldname": "file_size_mb",
+      "fieldtype": "Float",
+      "label": "File Size (MB)",
+      "read_only": 1
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Site Backup",
+  "naming_rule": "Random",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
+}

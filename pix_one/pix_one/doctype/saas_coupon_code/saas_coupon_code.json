@@ -1,0 +1,105 @@
+{
+  "actions": [],
+  "autoname": "field:code",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "code",
+    "discount_type",
+    "discount_value",
+    "column_break_basic",
+    "is_active",
+    "valid_until",
+    "section_break_usage",
+    "max_uses",
+    "column_break_usage",
+    "times_used"
+  ],
+  "fields": [
+    {
+      "fieldname": "code",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Coupon Code",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "default": "Percentage",
+      "fieldname": "discount_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Discount Type",
+      "options": "Percentage\nFixed Amount",
+      "reqd": 1
+    },
+    {
+      "fieldname": "discount_value",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Discount Value",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_basic",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "1",
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Active"
+    },
+    {
+      "fieldname": "valid_until",
+      "fieldtype": "Date",
+      "label": "Valid Until"
+    },
+    {
+      "fieldname": "section_break_usage",
+      "fieldtype": "Section Break",
+      "label": "Usage Limits"
+    },
+    {
+      "default": "0",
+      "fieldname": "max_uses",
+      "fieldtype": "Int",
+      "label": "Max Uses (0 = Unlimited)"
+    },
+    {
+      "fieldname": "column_break_usage",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "0",
+      "fieldname": "times_used",
+      "fieldtype": "Int",
+      "label": "Times Used",
+      "read_only": 1
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Coupon Code",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
+}

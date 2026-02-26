@@ -1,0 +1,77 @@
+{
+  "actions": [],
+  "autoname": "hash",
+  "creation": "2026-02-25 00:00:00.000000",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "user",
+    "token",
+    "column_break_basic",
+    "device_type",
+    "device_name",
+    "is_active"
+  ],
+  "fields": [
+    {
+      "fieldname": "user",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "User",
+      "options": "User",
+      "reqd": 1
+    },
+    {
+      "fieldname": "token",
+      "fieldtype": "Small Text",
+      "label": "Token",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_basic",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "web",
+      "fieldname": "device_type",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Device Type",
+      "options": "web\nandroid\nios"
+    },
+    {
+      "fieldname": "device_name",
+      "fieldtype": "Data",
+      "label": "Device Name"
+    },
+    {
+      "default": "1",
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Active"
+    }
+  ],
+  "index_web_pages_for_search": 0,
+  "istable": 0,
+  "links": [],
+  "modified": "2026-02-25 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Pix One",
+  "name": "SaaS Push Token",
+  "naming_rule": "Random",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "creation",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 0
+}
