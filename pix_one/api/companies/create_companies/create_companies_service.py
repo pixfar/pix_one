@@ -278,16 +278,62 @@ def _validate_company_quota(subscription_id: str, exclude_company_id: Optional[s
 
 # ==================== MAIN API ENDPOINTS ====================
 
+def _get_base_domain() -> str:
+    """Get the configured base domain from PixOne System Settings."""
+    try:
+        return (frappe.db.get_single_value("PixOne System Settings", "base_domain") or "pixone.com").strip().lower().rstrip(".")
+    except Exception:
+        return "pixone.com"
+
+
+def _validate_subdomain(subdomain: str) -> Tuple[bool, str]:
+    """
+    Validate and enforce subdomain uniqueness.
+    Returns (is_valid, error_message).
+    """
+    import re as _re
+
+    slug = (subdomain or "").strip().lower()
+
+    if len(slug) < 3:
+        return False, "Subdomain must be at least 3 characters."
+
+    if len(slug) > 63:
+        return False, "Subdomain cannot exceed 63 characters."
+
+    if not _re.match(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', slug):
+        return False, (
+            "Subdomain may only contain lowercase letters, numbers, and hyphens, "
+            "and must start and end with a letter or number."
+        )
+
+    # Check reserved list
+    from pix_one.api.companies.domain.domain_service import _BUILTIN_RESERVED, _get_settings
+    _, _, reserved = _get_settings()
+    if slug in reserved:
+        return False, f"'{slug}' is a reserved subdomain name."
+
+    # Uniqueness: ensure no active company uses this subdomain
+    taken = frappe.db.exists("SaaS Company", {
+        "subdomain": slug,
+        "status": ["not in", ["Deleted", "Failed"]]
+    })
+    if taken:
+        return False, f"The subdomain '{slug}' is already taken. Please choose a different one."
+
+    return True, ""
+
+
 @frappe.whitelist()
 @handle_exceptions
 def create_company(
     company_name: str,
+    subdomain: str,
     company_abbr: Optional[str] = None,
     admin_password: Optional[str] = None,
     admin_email: Optional[str] = None,
-    default_currency: str = "USD",
-    country: str = "United States",
-    domain: Optional[str] = None,
+    default_currency: str = "BDT",
+    country: str = "Bangladesh",
     apps_to_install: Optional[list] = ["erpnext"],
     subscription_id: Optional[str] = None
 ) -> Dict[str, Any]:
@@ -295,98 +341,119 @@ def create_company(
     Create a new company with a dedicated Frappe site.
 
     Args:
-        company_name: Name of the company
-        company_abbr: Company abbreviation (auto-generated if not provided)
-        admin_password: Admin password for the site (auto-generated if not provided)
-        admin_email: Admin email (defaults to current user)
-        default_currency: Default currency code
-        country: Country name
-        domain: Business domain/website (e.g., erp.acme.com)
-        apps_to_install: List of apps to install (e.g., ['erpnext'])
-        subscription_id: Subscription ID (auto-detected if not provided)
+        company_name:     Human-readable company name  (e.g. "Pixfar Technologies")
+        subdomain:        Unique subdomain slug         (e.g. "pixfar")
+                          → full site will be  pixfar.pixone.com
+        company_abbr:     Abbreviation (auto-generated if omitted)
+        admin_password:   Site admin password (auto-generated if omitted)
+        admin_email:      Site admin email (defaults to current user)
+        default_currency: ISO currency code
+        country:          Country name
+        apps_to_install:  Apps to install on the new site (default: ['erpnext'])
+        subscription_id:  Subscription to bill against (auto-detected if omitted)
 
     Returns:
-        Dictionary with company details and site information
+        {
+            "company_id": "COMP-2026-00001",
+            "company_name": "Pixfar Technologies",
+            "subdomain": "pixfar",
+            "site_name": "pixfar.pixone.com",
+            "site_url": "https://pixfar.pixone.com",
+            "status": "Queued"
+        }
     """
-    # Get current user
+    # ── Auth ─────────────────────────────────────────────────────────────────
     current_user = frappe.session.user
     if current_user == "Guest":
-        return ResponseFormatter.unauthorized("Please login to create a company")
+        return ResponseFormatter.unauthorized("Please login to create a company.")
 
-    # VALIDATE SUBSCRIPTION
+    # ── Subdomain validation (first – cheapest check) ────────────────────────
+    if not subdomain:
+        return ResponseFormatter.validation_error(
+            "Subdomain is required.",
+            {"subdomain": "Please provide a subdomain for your company site."}
+        )
+
+    slug = subdomain.strip().lower()
+    sub_valid, sub_error = _validate_subdomain(slug)
+    if not sub_valid:
+        return ResponseFormatter.validation_error(sub_error, {"subdomain": sub_error})
+
+    # ── Company name validation ──────────────────────────────────────────────
+    if not company_name or len(company_name.strip()) < 3:
+        return ResponseFormatter.validation_error(
+            "Company name must be at least 3 characters.",
+            {"company_name": "Too short"}
+        )
+
+    # ── Subscription validation ──────────────────────────────────────────────
     is_valid, error_msg, validated_subscription_id = _validate_subscription(current_user, subscription_id)
     if not is_valid:
-        return ResponseFormatter.validation_error(
-            error_msg,
-            {"subscription": "INVALID_OR_INACTIVE"}
-        )
+        return ResponseFormatter.validation_error(error_msg, {"subscription": "INVALID_OR_INACTIVE"})
 
     subscription_id = validated_subscription_id
 
-    # VALIDATE COMPANY QUOTA
+    # ── Quota check ──────────────────────────────────────────────────────────
     quota_valid, quota_error = _validate_company_quota(subscription_id)
     if not quota_valid:
-        return ResponseFormatter.validation_error(
-            quota_error,
-            {"quota": "EXCEEDED"}
-        )
+        return ResponseFormatter.validation_error(quota_error, {"quota": "EXCEEDED"})
 
-    # Validate company name
-    if not company_name or len(company_name.strip()) < 3:
-        return ResponseFormatter.validation_error(
-            "Invalid company name",
-            {"company_name": "Company name must be at least 3 characters"}
-        )
+    # ── Derived values ───────────────────────────────────────────────────────
+    base_domain = _get_base_domain()
+    site_name = f"{slug}.{base_domain}"
+    site_url = f"https://{site_name}"
 
-    # Auto-generate company abbreviation
     if not company_abbr:
-        import re
-        # Take first 3-5 chars or initials
+        import re as _re
         words = company_name.strip().split()
         if len(words) > 1:
-            company_abbr = ''.join([w[0].upper() for w in words[:5]])
+            company_abbr = "".join([w[0].upper() for w in words[:5]])
         else:
             company_abbr = company_name[:5].upper()
-        company_abbr = re.sub(r'[^A-Z0-9]', '', company_abbr)[:10]
+        company_abbr = _re.sub(r"[^A-Z0-9]", "", company_abbr)[:10]
 
-    # Auto-generate admin password if not provided
     if not admin_password:
         import secrets
         admin_password = secrets.token_urlsafe(16)
 
-    # Set admin email
     if not admin_email:
         admin_email = current_user
 
-    # Parse apps_to_install
     if apps_to_install is None:
-        apps_to_install = ["erpnext"]  # Default to ERPNext
+        apps_to_install = ["erpnext"]
     elif isinstance(apps_to_install, str):
         try:
             apps_to_install = json.loads(apps_to_install)
-        except:
-            apps_to_install = [app.strip() for app in apps_to_install.split(',') if app.strip()]
+        except Exception:
+            apps_to_install = [a.strip() for a in apps_to_install.split(",") if a.strip()]
 
-    # Create SaaS Company document
+    # ── Create SaaS Company document ─────────────────────────────────────────
     try:
         company_doc = frappe.get_doc({
             "doctype": "SaaS Company",
             "company_name": company_name,
             "company_abbr": company_abbr,
-            "site_name": domain.lower(),
+            "subdomain": slug,
+            "site_name": site_name,
+            "site_url": site_url,
             "customer_id": current_user,
             "subscription_id": subscription_id,
             "admin_password": admin_password,
             "admin_email": admin_email,
             "default_currency": default_currency,
             "country": country,
-            "domain": domain,
             "status": "Draft"
         })
 
         company_doc.insert(ignore_permissions=True)
         frappe.db.commit()
 
+    except frappe.UniqueValidationError:
+        frappe.db.rollback()
+        return ResponseFormatter.validation_error(
+            f"The subdomain '{slug}' was just registered by someone else. Please choose another.",
+            {"subdomain": "RACE_CONDITION"}
+        )
     except Exception as e:
         frappe.db.rollback()
         return ResponseFormatter.error(
@@ -394,52 +461,50 @@ def create_company(
             "COMPANY_CREATE_FAILED"
         )
 
-    # Start provisioning in background
-    site_name = domain.lower()
-
+    # ── Queue provisioning ───────────────────────────────────────────────────
     try:
-        # Update status to Queued
         company_doc.db_set("status", "Queued", update_modified=False)
         company_doc.db_set("site_status", "Queued", update_modified=False)
         frappe.db.commit()
 
-        # Enqueue background job for site provisioning
         frappe.enqueue(
             "pix_one.api.companies.create_companies.provisioning_jobs.provision_company_site",
-            queue="long",  # Use long queue for time-consuming tasks
-            timeout=600,  # 10 minutes timeout
+            queue="long",
+            timeout=600,
             company_id=company_doc.name,
             site_name=site_name,
             admin_password=admin_password,
             admin_email=admin_email,
-            customer_email=current_user,  # Send email to the customer who created the company
+            customer_email=current_user,
             apps_to_install=apps_to_install,
             is_async=True,
             now=False
         )
 
-        frappe.logger().info(f"Provisioning job enqueued for company {company_doc.name}")
+        frappe.logger().info(f"Provisioning job enqueued for company {company_doc.name} → {site_name}")
 
-        # Return immediate response
         return ResponseFormatter.created(
             {
                 "company_id": company_doc.name,
                 "company_name": company_doc.company_name,
+                "subdomain": slug,
                 "site_name": site_name,
-                "site_url": company_doc.site_url,
+                "site_url": site_url,
                 "status": "Queued",
-                "message": "Company record created. Site provisioning has been queued and will be processed shortly. You will receive an email with login credentials once provisioning is complete."
+                "message": (
+                    f"Company created. Your site '{site_name}' is being provisioned. "
+                    "You will receive an email with login credentials once it's ready."
+                )
             },
             f"Company '{company_name}' created. Provisioning in progress..."
         )
 
     except Exception as e:
-        # Mark as failed
         try:
             company_doc.db_set("status", "Failed", update_modified=False)
-            company_doc.db_set("provisioning_notes", f"Error: {str(e)}", update_modified=False)
+            company_doc.db_set("provisioning_notes", f"Queue error: {str(e)}", update_modified=False)
             frappe.db.commit()
-        except:
+        except Exception:
             pass
 
         frappe.log_error(f"Company creation failed: {str(e)}", "Company Creation Error")
@@ -507,16 +572,37 @@ def retry_failed_company(company_id: str) -> Dict[str, Any]:
                 {"status": company_doc.status}
             )
 
-        # Use the create_company function with existing details
-        return create_company(
-            company_name=company_doc.company_name,
-            company_abbr=company_doc.company_abbr,
-            admin_password=company_doc.get_password("admin_password"),
+        # Re-queue provisioning directly (subdomain already locked in the existing doc)
+        site_name = company_doc.site_name
+        admin_password = company_doc.get_password("admin_password") or "admin"
+
+        company_doc.db_set("status", "Queued", update_modified=False)
+        company_doc.db_set("site_status", "Queued", update_modified=False)
+        company_doc.db_set("provisioning_notes", "", update_modified=False)
+        frappe.db.commit()
+
+        frappe.enqueue(
+            "pix_one.api.companies.create_companies.provisioning_jobs.provision_company_site",
+            queue="long",
+            timeout=600,
+            company_id=company_doc.name,
+            site_name=site_name,
+            admin_password=admin_password,
             admin_email=company_doc.admin_email,
-            default_currency=company_doc.default_currency,
-            country=company_doc.country,
-            domain=company_doc.domain,
-            subscription_id=company_doc.subscription_id
+            customer_email=company_doc.customer_id,
+            apps_to_install=["erpnext"],
+            is_async=True,
+            now=False
+        )
+
+        return ResponseFormatter.success(
+            data={
+                "company_id": company_doc.name,
+                "subdomain": company_doc.subdomain,
+                "site_name": site_name,
+                "status": "Queued"
+            },
+            message=f"Retry queued for company '{company_doc.company_name}'."
         )
 
     except frappe.DoesNotExistError:

@@ -24,7 +24,14 @@
   "column_break_jbnb",
   "ssl_store_password",
   "section_break_gaqr",
-  "is_sandbox"
+  "is_sandbox",
+  "domain_tab",
+  "domain_section",
+  "base_domain",
+  "column_break_domain",
+  "max_subdomain_length",
+  "domain_notes_section",
+  "reserved_subdomains"
  ],
  "fields": [
   {
@@ -60,6 +67,46 @@
   {
    "fieldname": "section_break_gaqr",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "domain_tab",
+   "fieldtype": "Tab Break",
+   "label": "Domain Settings"
+  },
+  {
+   "fieldname": "domain_section",
+   "fieldtype": "Section Break",
+   "label": "Base Domain Configuration"
+  },
+  {
+   "description": "The root domain for all tenant subdomains. E.g. pixone.com → tenants get tenant.pixone.com",
+   "fieldname": "base_domain",
+   "fieldtype": "Data",
+   "label": "Base Domain",
+   "default": "pixone.com"
+  },
+  {
+   "fieldname": "column_break_domain",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "63",
+   "description": "Maximum characters allowed in a subdomain slug (RFC 1035 max is 63)",
+   "fieldname": "max_subdomain_length",
+   "fieldtype": "Int",
+   "label": "Max Subdomain Length"
+  },
+  {
+   "fieldname": "domain_notes_section",
+   "fieldtype": "Section Break",
+   "label": "Reserved Subdomains"
+  },
+  {
+   "description": "Comma-separated list of subdomains that cannot be registered by tenants",
+   "fieldname": "reserved_subdomains",
+   "fieldtype": "Small Text",
+   "label": "Reserved Subdomains",
+   "default": "www,api,app,admin,mail,smtp,ftp,ssh,cdn,static,assets,media,portal,login,logout,register,signup,dashboard,console,control,panel,support,help,docs,kb,blog,news,status,health,dev,staging,test,demo,sandbox,billing,payment,payments,shop,store,pixone,pix,pix_one,frappe,erpnext"
   },
   {
    "fieldname": "auth_tab",

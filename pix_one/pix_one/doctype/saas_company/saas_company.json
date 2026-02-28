@@ -14,6 +14,7 @@
   "company_abbr",
   "status",
   "col_break1",
+  "subdomain",
   "site_name",
   "site_url",
   "site_status",
@@ -83,7 +84,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Status",
-   "options": "Draft\nProvisioning\nActive\nSuspended\nDeleted\nFailed",
+   "options": "Draft\nQueued\nProvisioning\nActive\nSuspended\nDeleted\nFailed",
    "reqd": 1
   },
   {
@@ -91,10 +92,19 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "site_name",
+   "description": "The subdomain slug chosen at registration. E.g. 'pixfar' → pixfar.pixone.com",
+   "fieldname": "subdomain",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Site Name",
+   "label": "Subdomain",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "site_name",
+   "fieldtype": "Data",
+   "in_list_view": 0,
+   "label": "Site Name (FQDN)",
    "read_only": 1,
    "unique": 1
   },
